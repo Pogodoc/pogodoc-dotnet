@@ -17,18 +17,18 @@ public partial class PogodocApiClient
                 { "Authorization", $"Bearer {token}" },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "PogodocApi" },
-                { "X-Fern-SDK-Version", "0.0.12" },
+                { "X-Fern-SDK-Version", "0.0.23" },
             },
             clientOptions ?? new ClientOptions()
         );
         Templates = new TemplatesClient(_client);
-        Render = new RenderClient(_client);
+        Documents = new DocumentsClient(_client);
         Tokens = new TokensClient(_client);
     }
 
     public TemplatesClient Templates { get; init; }
 
-    public RenderClient Render { get; init; }
+    public DocumentsClient Documents { get; init; }
 
     public TokensClient Tokens { get; init; }
 }

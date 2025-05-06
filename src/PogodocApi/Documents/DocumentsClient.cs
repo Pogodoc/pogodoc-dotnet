@@ -7,11 +7,11 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
-public class RenderClient
+public class DocumentsClient
 {
     private RawClient _client;
 
-    public RenderClient(RawClient client)
+    public DocumentsClient(RawClient client)
     {
         _client = client;
     }
