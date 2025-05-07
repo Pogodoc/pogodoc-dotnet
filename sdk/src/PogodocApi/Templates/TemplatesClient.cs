@@ -35,12 +35,12 @@ public class TemplatesClient
     /// <summary>
     /// Finalizes template creation by saving template info to Strapi, copying preview files to permanent storage, and creating template index. Removes unfinished tag upon completion.
     /// </summary>
-    public async Task<object> SaveCreatedTemplateAsync(
+    public async Task SaveCreatedTemplateAsync(
         string templateId,
         SaveCreatedTemplateRequest request
     )
     {
-        var response = await _client.MakeRequestAsync(
+        await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
@@ -48,12 +48,6 @@ public class TemplatesClient
                 Body = request
             }
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return JsonSerializer.Deserialize<object>(responseBody)!;
-        }
-        throw new Exception(responseBody);
     }
 
     /// <summary>
@@ -83,41 +77,29 @@ public class TemplatesClient
     /// <summary>
     /// Deletes a template from Strapi and associated S3 storage. Removes all associated files and metadata.
     /// </summary>
-    public async Task<object> DeleteTemplateAsync(string templateId)
+    public async Task DeleteTemplateAsync(string templateId)
     {
-        var response = await _client.MakeRequestAsync(
+        await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Delete,
                 Path = $"templates/{templateId}"
             }
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return JsonSerializer.Deserialize<object>(responseBody)!;
-        }
-        throw new Exception(responseBody);
     }
 
     /// <summary>
     /// Extracts contents from an uploaded template ZIP file and stores individual files in the appropriate S3 storage structure.
     /// </summary>
-    public async Task<object> ExtractTemplateFilesAsync(string templateId)
+    public async Task ExtractTemplateFilesAsync(string templateId)
     {
-        var response = await _client.MakeRequestAsync(
+        await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
                 Path = $"templates/{templateId}/unzip"
             }
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return JsonSerializer.Deserialize<object>(responseBody)!;
-        }
-        throw new Exception(responseBody);
     }
 
     /// <summary>
@@ -189,12 +171,12 @@ public class TemplatesClient
     /// <summary>
     /// Uploads the template index.html file to S3 storage. Used for rendering the template in the browser.
     /// </summary>
-    public async Task<object> UploadTemplateIndexHtmlAsync(
+    public async Task UploadTemplateIndexHtmlAsync(
         string templateId,
         UploadTemplateIndexHtmlRequest request
     )
     {
-        var response = await _client.MakeRequestAsync(
+        await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
                 Method = HttpMethod.Post,
@@ -202,12 +184,6 @@ public class TemplatesClient
                 Body = request
             }
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return JsonSerializer.Deserialize<object>(responseBody)!;
-        }
-        throw new Exception(responseBody);
     }
 
     /// <summary>
