@@ -1,0 +1,4 @@
+/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/obj/Debug/net9.0/Pogodoc.GeneratedMSBuildEditorConfig.editorconfig
+/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/obj/Debug/net9.0/Pogodoc.AssemblyInfoInputs.cache
+/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/obj/Debug/net9.0/Pogodoc.AssemblyInfo.cs
+/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/obj/Debug/net9.0/Pogodoc.csproj.CoreCompileInputs.cache
