@@ -1,5 +1,0 @@
-/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/Pogodoc.Client.Tests/obj/Debug/net9.0/Pogodoc.Client.Tests.csproj.AssemblyReference.cache
-/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/Pogodoc.Client.Tests/obj/Debug/net9.0/Pogodoc.Client.Tests.GeneratedMSBuildEditorConfig.editorconfig
-/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/Pogodoc.Client.Tests/obj/Debug/net9.0/Pogodoc.Client.Tests.AssemblyInfoInputs.cache
-/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/Pogodoc.Client.Tests/obj/Debug/net9.0/Pogodoc.Client.Tests.AssemblyInfo.cs
-/Users/andrejslavejkov/Work/pogodoc-sdks/sdks/csharp/Pogodoc.Client.Tests/obj/Debug/net9.0/Pogodoc.Client.Tests.csproj.CoreCompileInputs.cache

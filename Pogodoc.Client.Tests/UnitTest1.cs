@@ -19,6 +19,7 @@ public class UnitTest1
 
         Assert.NotNull(apiToken);
         Assert.NotNull(baseUrl);
+
         _output.WriteLine("apiToken: " + apiToken);
         _output.WriteLine("baseUrl: " + baseUrl);
         var client = new PogodocClient(apiToken, baseUrl);
