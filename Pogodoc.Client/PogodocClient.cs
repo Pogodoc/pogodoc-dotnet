@@ -14,7 +14,10 @@ public class PogodocClient : PogodocApiClient
     public PogodocClient(string token, string? baseUrl)
         : base(token, new ClientOptions() { BaseUrl = baseUrl }) { }
 
-    public async Task<string> SaveTemplateAsync(string path, SaveTemplateMetadata metadata)
+    public async Task<string> SaveTemplateAsync(
+        string path,
+        SaveCreatedTemplateRequestTemplateInfo metadata
+    )
     {
         using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
         {
@@ -26,10 +29,10 @@ public class PogodocClient : PogodocApiClient
     public async Task<string> SaveTemplateFromFileStreamAsync(
         Stream payload,
         long payloadLength,
-        SaveTemplateMetadata metadata
+        SaveCreatedTemplateRequestTemplateInfo metadata
     )
     {
-        var initResponse = await PogodocClient.Templates.InitializeTemplateCreationAsync();
+        var initResponse = await Templates.InitializeTemplateCreationAsync();
 
         await S3Utils.UploadToS3WithUrlAsync(
             initResponse.PresignedTemplateUploadUrl,
@@ -38,27 +41,23 @@ public class PogodocClient : PogodocApiClient
             "application/zip"
         );
 
-        await Templates.ExtractTemplateFilesAsync(initResponse.JobId);
+        await Templates.ExtractTemplateFilesAsync(initResponse.JobId, null);
 
         var previewsResponse = await Templates.GenerateTemplatePreviewsAsync(
             initResponse.JobId,
-            new GenerateTemplatePreviewsRequest { Type = metadata.Type, Data = metadata.SampleData }
+            new GenerateTemplatePreviewsRequest
+            {
+                Type = Enum.Parse<GenerateTemplatePreviewsRequestType>(metadata.Type.ToString()),
+                Data = metadata.SampleData,
+            }
         );
 
         await Templates.SaveCreatedTemplateAsync(
             initResponse.JobId,
             new SaveCreatedTemplateRequest
             {
-                TemplateInfo = new TemplateInfo
-                {
-                    Title = metadata.Title,
-                    Description = metadata.Description,
-                    Type = metadata.Type,
-                    Categories = metadata.Categories,
-                    SampleData = metadata.SampleData,
-                    SourceCode = metadata.SourceCode,
-                },
-                PreviewIds = new PreviewIds
+                TemplateInfo = metadata,
+                PreviewIds = new SaveCreatedTemplateRequestPreviewIds
                 {
                     PngJobId = previewsResponse.PngPreview.JobId,
                     PdfJobId = previewsResponse.PdfPreview.JobId,
@@ -69,22 +68,34 @@ public class PogodocClient : PogodocApiClient
         return initResponse.JobId;
     }
 
-    public async Task<string> UpdateTemplateAsync(string path, UpdateTemplateProps metadata)
+    public async Task<string> UpdateTemplateAsync(
+        string path,
+        string templateId,
+        UpdateTemplateRequestTemplateInfo metadata
+    )
     {
         using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
         {
             var fileInfo = new FileInfo(path);
-            return await UpdateTemplateFromFileStreamAsync(fileStream, fileInfo.Length, metadata);
+            return await UpdateTemplateFromFileStreamAsync(
+                fileStream,
+                fileInfo.Length,
+                templateId,
+                metadata
+            );
         }
     }
 
     public async Task<string> UpdateTemplateFromFileStreamAsync(
         Stream payload,
         long payloadLength,
-        UpdateTemplateProps metadata
+        string templateId,
+        UpdateTemplateRequestTemplateInfo metadata
     )
     {
-        var initResponse = await Templates.InitializeTemplateCreationAsync(); // This creates a new contentId
+        var initResponse = await Templates.InitializeTemplateCreationAsync();
+
+        var contentId = initResponse.JobId;
 
         await S3Utils.UploadToS3WithUrlAsync(
             initResponse.PresignedTemplateUploadUrl,
@@ -93,19 +104,23 @@ public class PogodocClient : PogodocApiClient
             "application/zip"
         );
 
-        await Templates.ExtractTemplateFilesAsync(initResponse.JobId); // Extracts files for the new contentId
+        await Templates.ExtractTemplateFilesAsync(contentId, null);
 
         var previewsResponse = await Templates.GenerateTemplatePreviewsAsync(
-            initResponse.JobId,
-            new GenerateTemplatePreviewsRequest { Type = metadata.Type, Data = metadata.SampleData }
+            contentId,
+            new GenerateTemplatePreviewsRequest
+            {
+                Type = Enum.Parse<GenerateTemplatePreviewsRequestType>(metadata.Type.ToString()),
+                Data = metadata.SampleData,
+            }
         );
 
         await Templates.UpdateTemplateAsync(
-            metadata.TemplateId,
-            new UpdateTemplateRequest // Pass the original templateId here
+            templateId,
+            new UpdateTemplateRequest
             {
-                ContentId = initResponse.JobId, // This is the new contentId
-                TemplateInfo = new TemplateInfoUpdate
+                ContentId = contentId,
+                TemplateInfo = new UpdateTemplateRequestTemplateInfo
                 {
                     Title = metadata.Title,
                     Description = metadata.Description,
@@ -114,7 +129,7 @@ public class PogodocClient : PogodocApiClient
                     SampleData = metadata.SampleData,
                     SourceCode = metadata.SourceCode,
                 },
-                PreviewIds = new PreviewIds
+                PreviewIds = new UpdateTemplateRequestPreviewIds
                 {
                     PngJobId = previewsResponse.PngPreview.JobId,
                     PdfJobId = previewsResponse.PdfPreview.JobId,
@@ -122,7 +137,7 @@ public class PogodocClient : PogodocApiClient
             }
         );
 
-        return initResponse.JobId; // Return the new contentId
+        return contentId;
     }
 
     public async Task<GetJobStatusResponse> GenerateDocumentAsync(GenerateDocumentProps props)
@@ -131,13 +146,13 @@ public class PogodocClient : PogodocApiClient
         {
             Type = props.RenderConfig.Type,
             Target = props.RenderConfig.Target,
-            TemplateId = props.TemplateId,
+            TemplateId = props.RenderConfig.TemplateId,
             FormatOpts = props.RenderConfig.FormatOpts,
         };
 
         var initResponse = await Documents.InitializeRenderJobAsync(initRequest);
 
-        var dataString = JsonSerializer.Serialize(props.Data);
+        var dataString = JsonSerializer.Serialize(props.RenderConfig.Data);
         using (var dataStream = new MemoryStream(Encoding.UTF8.GetBytes(dataString)))
         {
             if (!string.IsNullOrEmpty(initResponse.PresignedDataUploadUrl))
@@ -172,7 +187,7 @@ public class PogodocClient : PogodocApiClient
             new StartRenderJobRequest
             {
                 ShouldWaitForRenderCompletion = props.ShouldWaitForRenderCompletion,
-                UploadPresignedS3Url = props.RenderConfig.PersonalUploadPresignedS3Url,
+                UploadPresignedS3Url = props.UploadPresignedS3Url,
             }
         );
 

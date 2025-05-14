@@ -91,13 +91,17 @@ public class TemplatesClient
     /// <summary>
     /// Extracts contents from an uploaded template ZIP file and stores individual files in the appropriate S3 storage structure.
     /// </summary>
-    public async Task ExtractTemplateFilesAsync(string templateId)
+    public async Task ExtractTemplateFilesAsync(
+        string templateId,
+        ExtractTemplateFilesRequest? request
+    )
     {
         await _client.MakeRequestAsync(
             new RawClient.JsonApiRequest
             {
-                Method = HttpMethod.Post,
-                Path = $"templates/{templateId}/unzip"
+                Method = HttpMethodExtensions.Patch,
+                Path = $"templates/{templateId}/unzip",
+                Body = request
             }
         );
     }
