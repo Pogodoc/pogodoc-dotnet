@@ -17,7 +17,7 @@ public partial class PogodocApiClient
                 { "Authorization", $"Bearer {token}" },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "PogodocApi" },
-                { "X-Fern-SDK-Version", "0.0.121" },
+                { "X-Fern-SDK-Version", "0.0.132" },
             },
             clientOptions ?? new ClientOptions()
         );
