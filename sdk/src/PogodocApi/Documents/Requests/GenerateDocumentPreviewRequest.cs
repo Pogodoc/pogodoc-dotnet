@@ -1,16 +1,25 @@
-using PogodocApi;
-
-#nullable enable
+using System.Text.Json.Serialization;
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record GenerateDocumentPreviewRequest
 {
-    public required string TemplateId { get; init; }
+    [JsonIgnore]
+    public required string TemplateId { get; set; }
 
-    public required GenerateDocumentPreviewRequestType Type { get; init; }
+    [JsonPropertyName("type")]
+    public required GenerateDocumentPreviewRequestType Type { get; set; }
 
-    public Dictionary<string, object> Data { get; init; } = new Dictionary<string, object>();
+    [JsonPropertyName("data")]
+    public object Data { get; set; } = new Dictionary<string, object?>();
 
-    public GenerateDocumentPreviewRequestFormatOpts? FormatOpts { get; init; }
+    [JsonPropertyName("formatOpts")]
+    public GenerateDocumentPreviewRequestFormatOpts? FormatOpts { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

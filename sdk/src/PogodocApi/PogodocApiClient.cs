@@ -1,34 +1,76 @@
-using PogodocApi;
+using System.Net.Http;
+using System.Threading;
+using global::System.Threading.Tasks;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
 public partial class PogodocApiClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
-    public PogodocApiClient(string? token = null, ClientOptions? clientOptions = null)
+    public PogodocApiClient(string token, ClientOptions? clientOptions = null)
     {
-        _client = new RawClient(
+        var defaultHeaders = new Headers(
             new Dictionary<string, string>()
             {
                 { "Authorization", $"Bearer {token}" },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "PogodocApi" },
-                { "X-Fern-SDK-Version", "0.0.132" },
-            },
-            clientOptions ?? new ClientOptions()
+                { "X-Fern-SDK-Version", Version.Current },
+            }
         );
+        clientOptions ??= new ClientOptions();
+        foreach (var header in defaultHeaders)
+        {
+            if (!clientOptions.Headers.ContainsKey(header.Key))
+            {
+                clientOptions.Headers[header.Key] = header.Value;
+            }
+        }
+        _client = new RawClient(clientOptions);
         Templates = new TemplatesClient(_client);
         Documents = new DocumentsClient(_client);
         Tokens = new TokensClient(_client);
     }
 
-    public TemplatesClient Templates { get; init; }
+    public TemplatesClient Templates { get; }
 
-    public DocumentsClient Documents { get; init; }
+    public DocumentsClient Documents { get; }
 
-    public TokensClient Tokens { get; init; }
+    public TokensClient Tokens { get; }
+
+    /// <example><code>
+    /// await client.PostBosheAsync();
+    /// </code></example>
+    public async global::System.Threading.Tasks.Task PostBosheAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "boshe",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return;
+        }
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
 }

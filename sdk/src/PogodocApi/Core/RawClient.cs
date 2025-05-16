@@ -1,120 +1,409 @@
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using global::System.Net.Http;
+using global::System.Net.Http.Headers;
+using global::System.Text;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace PogodocApi.Core;
-
-#nullable enable
 
 /// <summary>
 /// Utility class for making raw HTTP requests to the API.
 /// </summary>
-public class RawClient(Dictionary<string, string> headers, ClientOptions clientOptions)
+internal partial class RawClient(ClientOptions clientOptions)
 {
-    /// <summary>
-    /// The http client used to make requests.
-    /// </summary>
-    private readonly ClientOptions _clientOptions = clientOptions;
+    private const int MaxRetryDelayMs = 60000;
+    internal int BaseRetryDelay { get; set; } = 1000;
 
     /// <summary>
-    /// Global headers to be sent with every request.
+    /// The client options applied on every request.
     /// </summary>
-    private readonly Dictionary<string, string> _headers = headers;
+    internal readonly ClientOptions Options = clientOptions;
 
-    public async Task<ApiResponse> MakeRequestAsync(BaseApiRequest request)
+    [Obsolete("Use SendRequestAsync instead.")]
+    internal Task<PogodocApi.Core.ApiResponse> MakeRequestAsync(
+        PogodocApi.Core.BaseRequest request,
+        CancellationToken cancellationToken = default
+    )
     {
-        var url = BuildUrl(request.Path, request.Query);
-        var httpRequest = new HttpRequestMessage(request.Method, url);
-        if (request.ContentType != null)
+        return SendRequestAsync(request, cancellationToken);
+    }
+
+    internal async Task<PogodocApi.Core.ApiResponse> SendRequestAsync(
+        PogodocApi.Core.BaseRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // Apply the request timeout.
+        var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var timeout = request.Options?.Timeout ?? Options.Timeout;
+        cts.CancelAfter(timeout);
+
+        var httpRequest = CreateHttpRequest(request);
+        // Send the request.
+        return await SendWithRetriesAsync(httpRequest, request.Options, cts.Token)
+            .ConfigureAwait(false);
+    }
+
+    internal async Task<PogodocApi.Core.ApiResponse> SendRequestAsync(
+        HttpRequestMessage request,
+        IRequestOptions? options,
+        CancellationToken cancellationToken = default
+    )
+    {
+        // Apply the request timeout.
+        var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        var timeout = options?.Timeout ?? Options.Timeout;
+        cts.CancelAfter(timeout);
+
+        // Send the request.
+        return await SendWithRetriesAsync(request, options, cts.Token).ConfigureAwait(false);
+    }
+
+    private static async Task<HttpRequestMessage> CloneRequestAsync(HttpRequestMessage request)
+    {
+        var clonedRequest = new HttpRequestMessage(request.Method, request.RequestUri);
+        clonedRequest.Version = request.Version;
+        switch (request.Content)
         {
-            request.Headers.Add("Content-Type", request.ContentType);
+            case MultipartContent oldMultipartFormContent:
+                var originalBoundary =
+                    oldMultipartFormContent
+                        .Headers.ContentType?.Parameters.First(p =>
+                            p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase)
+                        )
+                        .Value?.Trim('"') ?? Guid.NewGuid().ToString();
+                var newMultipartContent = oldMultipartFormContent switch
+                {
+                    MultipartFormDataContent => new MultipartFormDataContent(originalBoundary),
+                    _ => new MultipartContent(),
+                };
+                foreach (var content in oldMultipartFormContent)
+                {
+                    var ms = new MemoryStream();
+                    await content.CopyToAsync(ms).ConfigureAwait(false);
+                    ms.Position = 0;
+                    var newPart = new StreamContent(ms);
+                    foreach (var header in oldMultipartFormContent.Headers)
+                    {
+                        newPart.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                    }
+
+                    newMultipartContent.Add(newPart);
+                }
+
+                clonedRequest.Content = newMultipartContent;
+                break;
+            default:
+                clonedRequest.Content = request.Content;
+                break;
         }
-        // Add global headers to the request
-        foreach (var header in _headers)
-        {
-            httpRequest.Headers.Add(header.Key, header.Value);
-        }
-        // Add request headers to the request
+
         foreach (var header in request.Headers)
         {
-            httpRequest.Headers.Add(header.Key, header.Value);
+            clonedRequest.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
-        // Add the request body to the request
-        if (request is JsonApiRequest jsonRequest)
+
+        return clonedRequest;
+    }
+
+    /// <summary>
+    /// Sends the request with retries, unless the request content is not retryable,
+    /// such as stream requests and multipart form data with stream content.
+    /// </summary>
+    private async Task<PogodocApi.Core.ApiResponse> SendWithRetriesAsync(
+        HttpRequestMessage request,
+        IRequestOptions? options,
+        CancellationToken cancellationToken
+    )
+    {
+        var httpClient = options?.HttpClient ?? Options.HttpClient;
+        var maxRetries = options?.MaxRetries ?? Options.MaxRetries;
+        var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        var isRetryableContent = IsRetryableContent(request);
+
+        if (!isRetryableContent)
         {
-            if (jsonRequest.Body != null)
+            return new PogodocApi.Core.ApiResponse
             {
-                var serializerOptions = new JsonSerializerOptions { WriteIndented = true, };
-                httpRequest.Content = new StringContent(
-                    JsonSerializer.Serialize(jsonRequest.Body, serializerOptions),
-                    Encoding.UTF8,
-                    "application/json"
-                );
-            }
+                StatusCode = (int)response.StatusCode,
+                Raw = response,
+            };
         }
-        else if (request is StreamApiRequest { Body: not null } streamRequest)
+
+        for (var i = 0; i < maxRetries; i++)
         {
-            httpRequest.Content = new StreamContent(streamRequest.Body);
+            if (!ShouldRetry(response))
+            {
+                break;
+            }
+
+            var delayMs = Math.Min(BaseRetryDelay * (int)Math.Pow(2, i), MaxRetryDelayMs);
+            await SystemTask.Delay(delayMs, cancellationToken).ConfigureAwait(false);
+            using var retryRequest = await CloneRequestAsync(request).ConfigureAwait(false);
+            response = await httpClient
+                .SendAsync(retryRequest, cancellationToken)
+                .ConfigureAwait(false);
         }
-        // Send the request
-        var response = await _clientOptions.HttpClient.SendAsync(httpRequest);
-        return new ApiResponse { StatusCode = (int)response.StatusCode, Raw = response };
+
+        return new PogodocApi.Core.ApiResponse
+        {
+            StatusCode = (int)response.StatusCode,
+            Raw = response,
+        };
     }
 
-    public record BaseApiRequest
+    private static bool ShouldRetry(HttpResponseMessage response)
     {
-        public required HttpMethod Method { get; init; }
-
-        public required string Path { get; init; }
-
-        public string? ContentType { get; init; }
-
-        public Dictionary<string, object> Query { get; init; } = new();
-
-        public Dictionary<string, string> Headers { get; init; } = new();
-
-        public object? RequestOptions { get; init; }
+        var statusCode = (int)response.StatusCode;
+        return statusCode is 408 or 429 or >= 500;
     }
 
-    /// <summary>
-    /// The request object to be sent for streaming uploads.
-    /// </summary>
-    public record StreamApiRequest : BaseApiRequest
+    private static bool IsRetryableContent(HttpRequestMessage request)
     {
-        public Stream? Body { get; init; }
+        return request.Content switch
+        {
+            IIsRetryableContent c => c.IsRetryable,
+            StreamContent => false,
+            MultipartContent content => !content.Any(c => c is StreamContent),
+            _ => true,
+        };
     }
 
-    /// <summary>
-    /// The request object to be sent for JSON APIs.
-    /// </summary>
-    public record JsonApiRequest : BaseApiRequest
+    internal HttpRequestMessage CreateHttpRequest(PogodocApi.Core.BaseRequest request)
     {
-        public object? Body { get; init; }
+        var url = BuildUrl(request);
+        var httpRequest = new HttpRequestMessage(request.Method, url);
+        httpRequest.Content = request.CreateContent();
+        var mergedHeaders = new Dictionary<string, List<string>>();
+        MergeHeaders(mergedHeaders, Options.Headers);
+        MergeAdditionalHeaders(mergedHeaders, Options.AdditionalHeaders);
+        MergeHeaders(mergedHeaders, request.Headers);
+        MergeHeaders(mergedHeaders, request.Options?.Headers);
+
+        MergeAdditionalHeaders(mergedHeaders, request.Options?.AdditionalHeaders ?? []);
+        SetHeaders(httpRequest, mergedHeaders);
+        return httpRequest;
     }
 
-    /// <summary>
-    /// The response object returned from the API.
-    /// </summary>
-    public record ApiResponse
+    private static string BuildUrl(PogodocApi.Core.BaseRequest request)
     {
-        public required int StatusCode { get; init; }
-
-        public required HttpResponseMessage Raw { get; init; }
-    }
-
-    private string BuildUrl(string path, Dictionary<string, object> query)
-    {
-        var trimmedBaseUrl = _clientOptions.BaseUrl.TrimEnd('/');
-        var trimmedBasePath = path.TrimStart('/');
+        var baseUrl = request.Options?.BaseUrl ?? request.BaseUrl;
+        var trimmedBaseUrl = baseUrl.TrimEnd('/');
+        var trimmedBasePath = request.Path.TrimStart('/');
         var url = $"{trimmedBaseUrl}/{trimmedBasePath}";
-        if (query.Count <= 0)
+
+        var queryParameters = GetQueryParameters(request);
+        if (!queryParameters.Any())
             return url;
+
         url += "?";
-        url = query.Aggregate(
+        url = queryParameters.Aggregate(
             url,
-            (current, queryItem) => current + $"{queryItem.Key}={queryItem.Value}&"
+            (current, queryItem) =>
+            {
+                if (
+                    queryItem.Value
+                    is global::System.Collections.IEnumerable collection
+                        and not string
+                )
+                {
+                    var items = collection
+                        .Cast<object>()
+                        .Select(value => $"{queryItem.Key}={value}")
+                        .ToList();
+                    if (items.Any())
+                    {
+                        current += string.Join("&", items) + "&";
+                    }
+                }
+                else
+                {
+                    current += $"{queryItem.Key}={queryItem.Value}&";
+                }
+
+                return current;
+            }
         );
-        url = url.Substring(0, url.Length - 1);
+        url = url[..^1];
         return url;
     }
+
+    private static List<KeyValuePair<string, string>> GetQueryParameters(
+        PogodocApi.Core.BaseRequest request
+    )
+    {
+        var result = TransformToKeyValuePairs(request.Query);
+        if (
+            request.Options?.AdditionalQueryParameters is null
+            || !request.Options.AdditionalQueryParameters.Any()
+        )
+        {
+            return result;
+        }
+
+        var additionalKeys = request
+            .Options.AdditionalQueryParameters.Select(p => p.Key)
+            .Distinct();
+        foreach (var key in additionalKeys)
+        {
+            result.RemoveAll(kv => kv.Key == key);
+        }
+
+        result.AddRange(request.Options.AdditionalQueryParameters);
+        return result;
+    }
+
+    private static List<KeyValuePair<string, string>> TransformToKeyValuePairs(
+        Dictionary<string, object> inputDict
+    )
+    {
+        var result = new List<KeyValuePair<string, string>>();
+        foreach (var kvp in inputDict)
+        {
+            switch (kvp.Value)
+            {
+                case string str:
+                    result.Add(new KeyValuePair<string, string>(kvp.Key, str));
+                    break;
+                case IEnumerable<string> strList:
+                {
+                    foreach (var value in strList)
+                    {
+                        result.Add(new KeyValuePair<string, string>(kvp.Key, value));
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private static void MergeHeaders(
+        Dictionary<string, List<string>> mergedHeaders,
+        Headers? headers
+    )
+    {
+        if (headers is null)
+        {
+            return;
+        }
+
+        foreach (var header in headers)
+        {
+            var value = header.Value?.Match(str => str, func => func.Invoke());
+            if (value != null)
+            {
+                mergedHeaders[header.Key] = [value];
+            }
+        }
+    }
+
+    private static void MergeAdditionalHeaders(
+        Dictionary<string, List<string>> mergedHeaders,
+        IEnumerable<KeyValuePair<string, string?>>? headers
+    )
+    {
+        if (headers is null)
+        {
+            return;
+        }
+
+        var usedKeys = new HashSet<string>();
+        foreach (var header in headers)
+        {
+            if (header.Value is null)
+            {
+                mergedHeaders.Remove(header.Key);
+                usedKeys.Remove(header.Key);
+                continue;
+            }
+
+            if (usedKeys.Contains(header.Key))
+            {
+                mergedHeaders[header.Key].Add(header.Value);
+            }
+            else
+            {
+                mergedHeaders[header.Key] = [header.Value];
+                usedKeys.Add(header.Key);
+            }
+        }
+    }
+
+    private void SetHeaders(
+        HttpRequestMessage httpRequest,
+        Dictionary<string, List<string>> mergedHeaders
+    )
+    {
+        foreach (var kv in mergedHeaders)
+        {
+            foreach (var header in kv.Value)
+            {
+                if (header is null)
+                {
+                    continue;
+                }
+
+                httpRequest.Headers.TryAddWithoutValidation(kv.Key, header);
+            }
+        }
+    }
+
+    private static (Encoding encoding, string? charset, string mediaType) ParseContentTypeOrDefault(
+        string? contentType,
+        Encoding encodingFallback,
+        string mediaTypeFallback
+    )
+    {
+        var encoding = encodingFallback;
+        var mediaType = mediaTypeFallback;
+        string? charset = null;
+        if (string.IsNullOrEmpty(contentType))
+        {
+            return (encoding, charset, mediaType);
+        }
+
+        if (!MediaTypeHeaderValue.TryParse(contentType, out var mediaTypeHeaderValue))
+        {
+            return (encoding, charset, mediaType);
+        }
+
+        if (!string.IsNullOrEmpty(mediaTypeHeaderValue.CharSet))
+        {
+            charset = mediaTypeHeaderValue.CharSet;
+            encoding = Encoding.GetEncoding(mediaTypeHeaderValue.CharSet);
+        }
+
+        if (!string.IsNullOrEmpty(mediaTypeHeaderValue.MediaType))
+        {
+            mediaType = mediaTypeHeaderValue.MediaType;
+        }
+
+        return (encoding, charset, mediaType);
+    }
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.ApiResponse instead.")]
+    internal record ApiResponse : PogodocApi.Core.ApiResponse;
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.BaseRequest instead.")]
+    internal abstract record BaseApiRequest : PogodocApi.Core.BaseRequest;
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.EmptyRequest instead.")]
+    internal abstract record EmptyApiRequest : PogodocApi.Core.EmptyRequest;
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.JsonRequest instead.")]
+    internal abstract record JsonApiRequest : PogodocApi.Core.JsonRequest;
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.MultipartFormRequest instead.")]
+    internal abstract record MultipartFormRequest : PogodocApi.Core.MultipartFormRequest;
+
+    /// <inheritdoc />
+    [Obsolete("Use PogodocApi.Core.StreamRequest instead.")]
+    internal abstract record StreamApiRequest : PogodocApi.Core.StreamRequest;
 }

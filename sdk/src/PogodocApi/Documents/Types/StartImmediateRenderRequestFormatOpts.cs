@@ -1,21 +1,36 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using PogodocApi;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record StartImmediateRenderRequestFormatOpts
 {
     [JsonPropertyName("fromPage")]
-    public double? FromPage { get; init; }
+    public double? FromPage { get; set; }
 
     [JsonPropertyName("toPage")]
-    public double? ToPage { get; init; }
+    public double? ToPage { get; set; }
 
     [JsonPropertyName("format")]
-    public StartImmediateRenderRequestFormatOptsFormat? Format { get; init; }
+    public StartImmediateRenderRequestFormatOptsFormat? Format { get; set; }
 
     [JsonPropertyName("waitForSelector")]
-    public string? WaitForSelector { get; init; }
+    public string? WaitForSelector { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

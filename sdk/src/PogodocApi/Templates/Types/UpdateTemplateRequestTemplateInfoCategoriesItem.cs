@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<UpdateTemplateRequestTemplateInfoCategoriesItem>))]
+[JsonConverter(typeof(EnumSerializer<UpdateTemplateRequestTemplateInfoCategoriesItem>))]
 public enum UpdateTemplateRequestTemplateInfoCategoriesItem
 {
     [EnumMember(Value = "invoice")]
@@ -23,5 +20,5 @@ public enum UpdateTemplateRequestTemplateInfoCategoriesItem
     Cv,
 
     [EnumMember(Value = "other")]
-    Other
+    Other,
 }

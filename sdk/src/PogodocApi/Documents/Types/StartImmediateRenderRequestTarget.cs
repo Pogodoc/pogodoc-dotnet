@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<StartImmediateRenderRequestTarget>))]
+[JsonConverter(typeof(EnumSerializer<StartImmediateRenderRequestTarget>))]
 public enum StartImmediateRenderRequestTarget
 {
     [EnumMember(Value = "pdf")]
@@ -29,5 +26,5 @@ public enum StartImmediateRenderRequestTarget
     Png,
 
     [EnumMember(Value = "jpg")]
-    Jpg
+    Jpg,
 }

@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<GenerateTemplatePreviewsRequestType>))]
+[JsonConverter(typeof(EnumSerializer<GenerateTemplatePreviewsRequestType>))]
 public enum GenerateTemplatePreviewsRequestType
 {
     [EnumMember(Value = "docx")]
@@ -29,5 +26,5 @@ public enum GenerateTemplatePreviewsRequestType
     Latex,
 
     [EnumMember(Value = "react")]
-    React
+    React,
 }

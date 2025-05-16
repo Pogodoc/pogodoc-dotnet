@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<GetJobStatusResponseTarget>))]
+[JsonConverter(typeof(EnumSerializer<GetJobStatusResponseTarget>))]
 public enum GetJobStatusResponseTarget
 {
     [EnumMember(Value = "pdf")]
@@ -29,5 +26,5 @@ public enum GetJobStatusResponseTarget
     Png,
 
     [EnumMember(Value = "jpg")]
-    Jpg
+    Jpg,
 }

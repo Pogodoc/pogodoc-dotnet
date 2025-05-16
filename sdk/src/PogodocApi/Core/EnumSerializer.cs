@@ -4,13 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace PogodocApi.Core;
 
-public class StringEnumSerializer<TEnum> : JsonConverter<TEnum>
-    where TEnum : struct, System.Enum
+internal class EnumSerializer<TEnum> : JsonConverter<TEnum>
+    where TEnum : struct, Enum
 {
     private readonly Dictionary<TEnum, string> _enumToString = new();
     private readonly Dictionary<string, TEnum> _stringToEnum = new();
 
-    public StringEnumSerializer()
+    public EnumSerializer()
     {
         var type = typeof(TEnum);
         var values = Enum.GetValues(type);
@@ -18,7 +18,7 @@ public class StringEnumSerializer<TEnum> : JsonConverter<TEnum>
         foreach (var value in values)
         {
             var enumValue = (TEnum)value;
-            var enumMember = type.GetMember(enumValue.ToString())[0];
+            var enumMember = type.GetField(enumValue.ToString())!;
             var attr = enumMember
                 .GetCustomAttributes(typeof(EnumMemberAttribute), false)
                 .Cast<EnumMemberAttribute>()
@@ -36,7 +36,7 @@ public class StringEnumSerializer<TEnum> : JsonConverter<TEnum>
 
     public override TEnum Read(
         ref Utf8JsonReader reader,
-        System.Type typeToConvert,
+        global::System.Type typeToConvert,
         JsonSerializerOptions options
     )
     {

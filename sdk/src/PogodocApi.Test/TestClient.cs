@@ -1,3 +1,6 @@
+using NUnit.Framework;
+
 namespace PogodocApi.Test;
 
-public class TestClient { }
+[TestFixture]
+public class TestClient;

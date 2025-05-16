@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<GenerateDocumentPreviewRequestFormatOptsFormat>))]
+[JsonConverter(typeof(EnumSerializer<GenerateDocumentPreviewRequestFormatOptsFormat>))]
 public enum GenerateDocumentPreviewRequestFormatOptsFormat
 {
     [EnumMember(Value = "letter")]
@@ -41,5 +38,5 @@ public enum GenerateDocumentPreviewRequestFormatOptsFormat
     A5,
 
     [EnumMember(Value = "a6")]
-    A6
+    A6,
 }
