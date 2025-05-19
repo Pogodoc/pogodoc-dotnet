@@ -69,7 +69,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
 
         var template = await client.UpdateTemplateAsync(
             "../../../../../../data/templates/React-Demo-App.zip",
-            "a071d25b-ba76-4330-97f5-22f0a1b6e2a4",
+            "f6f09cfe-4e45-4f90-a619-d18a0c799bff",
             new UpdateTemplateRequestTemplateInfo
             {
                 Title = "Invoice-csharp-updated",
@@ -91,7 +91,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         {
             RenderConfig = new InitializeRenderJobRequest
             {
-                TemplateId = "a071d25b-ba76-4330-97f5-22f0a1b6e2a4",
+                TemplateId = "f6f09cfe-4e45-4f90-a619-d18a0c799bff",
                 Type = InitializeRenderJobRequestType.Html,
                 Target = InitializeRenderJobRequestTarget.Pdf,
                 Data = sampleData,
@@ -101,7 +101,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         };
 
         var result = await client.GenerateDocumentAsync(props);
-        _output.WriteLine("result: " + result);
+        _output.WriteLine("result: " + result.Output.Data.Url);
     }
 
     [Fact]
@@ -122,7 +122,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         };
 
         var result = await client.GenerateDocumentAsync(props);
-        _output.WriteLine("result: " + result);
+        _output.WriteLine("STRING TEMPLATE RESULT: " + result.Output.Data.Url);
     }
 
     private static Dictionary<string, object?>? ReadJsonFile(string filePath)
