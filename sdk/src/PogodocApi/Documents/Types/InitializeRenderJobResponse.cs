@@ -1,21 +1,36 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
-using PogodocApi;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record InitializeRenderJobResponse
 {
     [JsonPropertyName("jobId")]
-    public required string JobId { get; init; }
+    public required string JobId { get; set; }
 
     [JsonPropertyName("target")]
-    public required InitializeRenderJobResponseTarget Target { get; init; }
+    public required InitializeRenderJobResponseTarget Target { get; set; }
 
     [JsonPropertyName("presignedDataUploadUrl")]
-    public string? PresignedDataUploadUrl { get; init; }
+    public string? PresignedDataUploadUrl { get; set; }
 
     [JsonPropertyName("presignedTemplateUploadUrl")]
-    public string? PresignedTemplateUploadUrl { get; init; }
+    public string? PresignedTemplateUploadUrl { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<StartImmediateRenderRequestType>))]
+[JsonConverter(typeof(EnumSerializer<StartImmediateRenderRequestType>))]
 public enum StartImmediateRenderRequestType
 {
     [EnumMember(Value = "docx")]
@@ -29,5 +26,5 @@ public enum StartImmediateRenderRequestType
     Latex,
 
     [EnumMember(Value = "react")]
-    React
+    React,
 }

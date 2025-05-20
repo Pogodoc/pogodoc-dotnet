@@ -1,14 +1,30 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record UpdateTemplateRequestPreviewIds
 {
     [JsonPropertyName("pngJobId")]
-    public required string PngJobId { get; init; }
+    public required string PngJobId { get; set; }
 
     [JsonPropertyName("pdfJobId")]
-    public required string PdfJobId { get; init; }
+    public required string PdfJobId { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

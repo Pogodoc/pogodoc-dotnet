@@ -1,28 +1,31 @@
 using System.Text.Json.Serialization;
-using PogodocApi;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record StartImmediateRenderRequest
 {
     [JsonPropertyName("data")]
-    public Dictionary<string, object> StartImmediateRenderRequestData { get; init; } =
-        new Dictionary<string, object>();
+    public object StartImmediateRenderRequestData { get; set; } = new Dictionary<string, object?>();
 
     [JsonPropertyName("type")]
-    public required StartImmediateRenderRequestType Type { get; init; }
+    public required StartImmediateRenderRequestType Type { get; set; }
 
     [JsonPropertyName("target")]
-    public required StartImmediateRenderRequestTarget Target { get; init; }
+    public required StartImmediateRenderRequestTarget Target { get; set; }
 
     [JsonPropertyName("templateId")]
-    public string? TemplateId { get; init; }
+    public string? TemplateId { get; set; }
 
     [JsonPropertyName("formatOpts")]
-    public StartImmediateRenderRequestFormatOpts? FormatOpts { get; init; }
+    public StartImmediateRenderRequestFormatOpts? FormatOpts { get; set; }
 
     [JsonPropertyName("template")]
-    public string? Template { get; init; }
+    public string? Template { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

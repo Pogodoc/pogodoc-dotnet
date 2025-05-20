@@ -1,17 +1,15 @@
 using System.Net.Http;
 using System.Text.Json;
-using PogodocApi;
+using System.Threading;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-public class DocumentsClient
+public partial class DocumentsClient
 {
     private RawClient _client;
 
-    public DocumentsClient(RawClient client)
+    internal DocumentsClient(RawClient client)
     {
         _client = client;
     }
@@ -19,110 +17,270 @@ public class DocumentsClient
     /// <summary>
     /// Creates a new render job with a unique ID, sets up S3 storage for template and data files, and generates presigned upload URLs if needed. Requires subscription check.
     /// </summary>
+    /// <example><code>
+    /// await client.Documents.InitializeRenderJobAsync(
+    ///     new InitializeRenderJobRequest
+    ///     {
+    ///         Type = InitializeRenderJobRequestType.Docx,
+    ///         Target = InitializeRenderJobRequestTarget.Pdf,
+    ///     }
+    /// );
+    /// </code></example>
     public async Task<InitializeRenderJobResponse> InitializeRenderJobAsync(
-        InitializeRenderJobRequest request
+        InitializeRenderJobRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "documents/init",
-                Body = request
-            }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "documents/init",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<InitializeRenderJobResponse>(responseBody)!;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<InitializeRenderJobResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
-        throw new Exception(responseBody);
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
     }
 
     /// <summary>
     /// Takes a previously initialized job, updates its status to in-progress, and triggers the rendering process using Puppeteer. Can optionally wait for render completion.
     /// </summary>
+    /// <example><code>
+    /// await client.Documents.StartRenderJobAsync("jobId", new StartRenderJobRequest());
+    /// </code></example>
     public async Task<StartRenderJobResponse> StartRenderJobAsync(
         string jobId,
-        StartRenderJobRequest request
+        StartRenderJobRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                Method = HttpMethod.Post,
-                Path = $"documents/{jobId}/render",
-                Body = request
-            }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "documents/{0}/render",
+                        ValueConvert.ToPathParameterString(jobId)
+                    ),
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<StartRenderJobResponse>(responseBody)!;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<StartRenderJobResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
-        throw new Exception(responseBody);
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
     }
 
     /// <summary>
     /// Generates a preview by creating a single-page render job, processing it immediately, and returning the output URL. Used for template visualization.
     /// </summary>
+    /// <example><code>
+    /// await client.Documents.GenerateDocumentPreviewAsync(
+    ///     new GenerateDocumentPreviewRequest
+    ///     {
+    ///         TemplateId = "templateId",
+    ///         Type = GenerateDocumentPreviewRequestType.Docx,
+    ///         Data = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
+    ///     }
+    /// );
+    /// </code></example>
     public async Task<GenerateDocumentPreviewResponse> GenerateDocumentPreviewAsync(
-        GenerateDocumentPreviewRequest request
+        GenerateDocumentPreviewRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>() { { "templateId", request.TemplateId }, };
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "documents/render-preview",
-                Query = _query
-            }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        var _query = new Dictionary<string, object>();
+        _query["templateId"] = request.TemplateId;
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "documents/render-preview",
+                    Body = request,
+                    Query = _query,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GenerateDocumentPreviewResponse>(responseBody)!;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GenerateDocumentPreviewResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
-        throw new Exception(responseBody);
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
     }
 
     /// <summary>
     /// Combines initialization and rendering in one step. Creates a job, uploads template/data directly, starts rendering, and adds the document to Strapi. Requires subscription check.
     /// </summary>
+    /// <example><code>
+    /// await client.Documents.StartImmediateRenderAsync(
+    ///     new StartImmediateRenderRequest
+    ///     {
+    ///         StartImmediateRenderRequestData = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
+    ///         Type = StartImmediateRenderRequestType.Docx,
+    ///         Target = StartImmediateRenderRequestTarget.Pdf,
+    ///     }
+    /// );
+    /// </code></example>
     public async Task<StartImmediateRenderResponse> StartImmediateRenderAsync(
-        StartImmediateRenderRequest request
+        StartImmediateRenderRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                Method = HttpMethod.Post,
-                Path = "documents/immediate-render",
-                Body = request
-            }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "documents/immediate-render",
+                    Body = request,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<StartImmediateRenderResponse>(responseBody)!;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<StartImmediateRenderResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
-        throw new Exception(responseBody);
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
     }
 
     /// <summary>
     /// Fetches detailed job information from S3 storage including job status, template ID, target format, and output details if available.
     /// </summary>
-    public async Task<GetJobStatusResponse> GetJobStatusAsync(string jobId)
+    /// <example><code>
+    /// await client.Documents.GetJobStatusAsync("jobId");
+    /// </code></example>
+    public async Task<GetJobStatusResponse> GetJobStatusAsync(
+        string jobId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest { Method = HttpMethod.Get, Path = $"jobs/{jobId}" }
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = string.Format("jobs/{0}", ValueConvert.ToPathParameterString(jobId)),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return JsonSerializer.Deserialize<GetJobStatusResponse>(responseBody)!;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetJobStatusResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
-        throw new Exception(responseBody);
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
     }
 }

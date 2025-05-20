@@ -1,13 +1,10 @@
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
-using PogodocApi;
 using PogodocApi.Core;
-
-#nullable enable
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(StringEnumSerializer<StartImmediateRenderRequestFormatOptsFormat>))]
+[JsonConverter(typeof(EnumSerializer<StartImmediateRenderRequestFormatOptsFormat>))]
 public enum StartImmediateRenderRequestFormatOptsFormat
 {
     [EnumMember(Value = "letter")]
@@ -41,5 +38,5 @@ public enum StartImmediateRenderRequestFormatOptsFormat
     A5,
 
     [EnumMember(Value = "a6")]
-    A6
+    A6,
 }

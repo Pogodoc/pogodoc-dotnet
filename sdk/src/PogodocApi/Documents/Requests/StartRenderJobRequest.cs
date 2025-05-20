@@ -1,14 +1,19 @@
 using System.Text.Json.Serialization;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record StartRenderJobRequest
 {
     [JsonPropertyName("shouldWaitForRenderCompletion")]
-    public bool? ShouldWaitForRenderCompletion { get; init; }
+    public bool? ShouldWaitForRenderCompletion { get; set; }
 
     [JsonPropertyName("uploadPresignedS3Url")]
-    public string? UploadPresignedS3Url { get; init; }
+    public string? UploadPresignedS3Url { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }

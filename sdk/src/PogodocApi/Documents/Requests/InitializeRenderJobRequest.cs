@@ -1,24 +1,28 @@
 using System.Text.Json.Serialization;
-using PogodocApi;
-
-#nullable enable
+using PogodocApi.Core;
 
 namespace PogodocApi;
 
 public record InitializeRenderJobRequest
 {
     [JsonPropertyName("data")]
-    public Dictionary<string, object>? Data { get; init; }
+    public object? Data { get; set; }
 
     [JsonPropertyName("type")]
-    public required InitializeRenderJobRequestType Type { get; init; }
+    public required InitializeRenderJobRequestType Type { get; set; }
 
     [JsonPropertyName("target")]
-    public required InitializeRenderJobRequestTarget Target { get; init; }
+    public required InitializeRenderJobRequestTarget Target { get; set; }
 
     [JsonPropertyName("templateId")]
-    public string? TemplateId { get; init; }
+    public string? TemplateId { get; set; }
 
     [JsonPropertyName("formatOpts")]
-    public InitializeRenderJobRequestFormatOpts? FormatOpts { get; init; }
+    public InitializeRenderJobRequestFormatOpts? FormatOpts { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
 }
