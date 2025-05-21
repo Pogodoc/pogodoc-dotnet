@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PogodocApi", "PogodocApi\PogodocApi.csproj", "{845A5B4E-468A-4656-858B-BF34FF08F618}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PogodocApi", "PogodocApi\PogodocApi.csproj", "{C314C085-3F98-4372-9B9D-4EA51D8E8E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PogodocApi.Test", "PogodocApi.Test\PogodocApi.Test.csproj", "{A3A060FE-9893-45AD-84DD-AD961F7C742E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PogodocApi.Test", "PogodocApi.Test\PogodocApi.Test.csproj", "{781E195C-530E-4241-9B85-9BF885F156AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{845A5B4E-468A-4656-858B-BF34FF08F618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{845A5B4E-468A-4656-858B-BF34FF08F618}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{845A5B4E-468A-4656-858B-BF34FF08F618}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{845A5B4E-468A-4656-858B-BF34FF08F618}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A3A060FE-9893-45AD-84DD-AD961F7C742E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A3A060FE-9893-45AD-84DD-AD961F7C742E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A3A060FE-9893-45AD-84DD-AD961F7C742E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A3A060FE-9893-45AD-84DD-AD961F7C742E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C314C085-3F98-4372-9B9D-4EA51D8E8E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C314C085-3F98-4372-9B9D-4EA51D8E8E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C314C085-3F98-4372-9B9D-4EA51D8E8E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C314C085-3F98-4372-9B9D-4EA51D8E8E90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781E195C-530E-4241-9B85-9BF885F156AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781E195C-530E-4241-9B85-9BF885F156AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781E195C-530E-4241-9B85-9BF885F156AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781E195C-530E-4241-9B85-9BF885F156AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
