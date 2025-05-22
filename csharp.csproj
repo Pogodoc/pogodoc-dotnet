@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>pogodoc-csharp</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Martin Mitev</Authors>
+    <Company>Pogodoc</Company>
+    <IsPackage>true</IsPackage>
+  </PropertyGroup>
+
+</Project>
