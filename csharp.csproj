@@ -11,4 +11,8 @@
     <IsPackage>true</IsPackage>
   </PropertyGroup>
 
+  <ItemGroup>
+	  <ProjectReference Include="Pogodoc.Client/Pogodoc.Client.csproj" />
+	  <ProjectReference Include="sdk/src/PogodocApi.csproj" />
+  </ItemGroup>
 </Project>
