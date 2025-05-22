@@ -1,13 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" />
+    <!-- <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" PrivateAssets="all" /> -->
+    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" >
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>PogodocApi.dll</IncludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
   <PropertyGroup>
+    <PackageId>pogodoc-csharp</PackageId>
+    <Version>1.1.0</Version>
+    <Authors>Martin Mitev</Authors>
+    <Company>Pogodoc</Company>
+    <IsPackage>true</IsPackage>    
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>  
   </PropertyGroup>
+
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+    </ItemGroup>
+  </Target>
 </Project>
