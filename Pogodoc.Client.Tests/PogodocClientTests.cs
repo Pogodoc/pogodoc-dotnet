@@ -69,7 +69,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
 
         var template = await client.UpdateTemplateAsync(
             "../../../../../../data/templates/React-Demo-App.zip",
-            "f6f09cfe-4e45-4f90-a619-d18a0c799bff",
+            "a43bd040-fc6f-4fce-a65b-913cf059c51c",
             new UpdateTemplateRequestTemplateInfo
             {
                 Title = "Invoice-csharp-updated",
@@ -91,7 +91,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         {
             RenderConfig = new InitializeRenderJobRequest
             {
-                TemplateId = "f6f09cfe-4e45-4f90-a619-d18a0c799bff",
+                TemplateId = "a43bd040-fc6f-4fce-a65b-913cf059c51c",
                 Type = InitializeRenderJobRequestType.Html,
                 Target = InitializeRenderJobRequestTarget.Pdf,
                 Data = sampleData,
