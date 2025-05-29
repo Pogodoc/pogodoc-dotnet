@@ -16,7 +16,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Pogodoc.Client\Pogodoc.Client.csproj" />
+    <ProjectReference Include="..\Pogodoc.SDK\Pogodoc.SDK.csproj" />
     <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" />
   </ItemGroup>
 </Project>

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Client", "Pogodoc.Client\Pogodoc.Client.csproj", "{5FCF84F4-2CEE-45CE-8542-552D88D154E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.SDK", "Pogodoc.SDK\Pogodoc.SDK.csproj", "{5FCF84F4-2CEE-45CE-8542-552D88D154E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Client.Tests", "Pogodoc.Client.Tests\Pogodoc.Client.Tests.csproj", "{665477C8-25A0-46A0-909E-5EDDC55C67D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.SDK.Tests", "Pogodoc.SDK.Tests\Pogodoc.SDK.Tests.csproj", "{665477C8-25A0-46A0-909E-5EDDC55C67D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PogodocApi", "sdk\src\PogodocApi\PogodocApi.csproj", "{76A1FF67-FCEE-433C-9F64-ACE899FC1D48}"
 EndProject

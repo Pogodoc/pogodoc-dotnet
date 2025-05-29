@@ -1,4 +1,4 @@
-﻿namespace Pogodoc.Client.Tests;
+﻿namespace Pogodoc.SDK.Tests;
 
 using System;
 using System.IO;
