@@ -8,8 +8,8 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PackageId>pogodoc</PackageId>
-    <Version>1.1.0</Version>
+    <PackageId>Pogodoc.SDK</PackageId>
+    <Version>0.1.0</Version>
     <Authors>Martin Mitev</Authors>
     <Company>Pogodoc</Company>
     <IsPackage>true</IsPackage>    
