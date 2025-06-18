@@ -6,9 +6,15 @@ namespace PogodocApi;
 
 public record InitializeTemplateCreationResponse
 {
-    [JsonPropertyName("jobId")]
-    public required string JobId { get; set; }
+    /// <summary>
+    /// ID of the template
+    /// </summary>
+    [JsonPropertyName("templateId")]
+    public required string TemplateId { get; set; }
 
+    /// <summary>
+    /// Presigned URL to upload the template to S3
+    /// </summary>
     [JsonPropertyName("presignedTemplateUploadUrl")]
     public required string PresignedTemplateUploadUrl { get; set; }
 

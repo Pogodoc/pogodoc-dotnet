@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record CloneTemplateResponse
 {
+    /// <summary>
+    /// ID of the new template
+    /// </summary>
     [JsonPropertyName("newTemplateId")]
     public required string NewTemplateId { get; set; }
 

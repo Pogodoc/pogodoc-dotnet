@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record GetTemplateIndexHtmlResponse
 {
+    /// <summary>
+    /// Index.html file of the template
+    /// </summary>
     [JsonPropertyName("templateIndex")]
     public required string TemplateIndex { get; set; }
 

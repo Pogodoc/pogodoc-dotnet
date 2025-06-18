@@ -4,19 +4,10 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
-public record GenerateDocumentPreviewRequestFormatOpts
+public record DeleteTemplateResponse
 {
-    [JsonPropertyName("fromPage")]
-    public double? FromPage { get; set; }
-
-    [JsonPropertyName("toPage")]
-    public double? ToPage { get; set; }
-
-    [JsonPropertyName("format")]
-    public GenerateDocumentPreviewRequestFormatOptsFormat? Format { get; set; }
-
-    [JsonPropertyName("waitForSelector")]
-    public string? WaitForSelector { get; set; }
+    [JsonPropertyName("templateId")]
+    public required string TemplateId { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record StartRenderJobResponse
 {
+    /// <summary>
+    /// ID of the render job
+    /// </summary>
     [JsonPropertyName("jobId")]
     public required string JobId { get; set; }
 

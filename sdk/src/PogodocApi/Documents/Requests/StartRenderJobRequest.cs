@@ -5,6 +5,9 @@ namespace PogodocApi;
 
 public record StartRenderJobRequest
 {
+    /// <summary>
+    /// Whether to wait for the render job to complete, if false, the job will be returned immediately
+    /// </summary>
     [JsonPropertyName("shouldWaitForRenderCompletion")]
     public bool? ShouldWaitForRenderCompletion { get; set; }
 

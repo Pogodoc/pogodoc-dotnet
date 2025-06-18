@@ -1,6 +1,3 @@
-using System.Net.Http;
-using System.Threading;
-using global::System.Threading.Tasks;
 using PogodocApi.Core;
 
 namespace PogodocApi;
@@ -9,7 +6,7 @@ public partial class PogodocApiClient
 {
     private readonly RawClient _client;
 
-    public PogodocApiClient(string token, ClientOptions? clientOptions = null)
+    public PogodocApiClient(string? token = null, ClientOptions? clientOptions = null)
     {
         var defaultHeaders = new Headers(
             new Dictionary<string, string>()
@@ -31,46 +28,9 @@ public partial class PogodocApiClient
         _client = new RawClient(clientOptions);
         Templates = new TemplatesClient(_client);
         Documents = new DocumentsClient(_client);
-        Tokens = new TokensClient(_client);
     }
 
     public TemplatesClient Templates { get; }
 
     public DocumentsClient Documents { get; }
-
-    public TokensClient Tokens { get; }
-
-    /// <example><code>
-    /// await client.PostBosheAsync();
-    /// </code></example>
-    public async global::System.Threading.Tasks.Task PostBosheAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "boshe",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return;
-        }
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            throw new PogodocApiApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
 }

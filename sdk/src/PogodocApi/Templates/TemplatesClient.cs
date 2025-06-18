@@ -207,7 +207,7 @@ public partial class TemplatesClient
     /// <example><code>
     /// await client.Templates.DeleteTemplateAsync("templateId");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteTemplateAsync(
+    public async Task<DeleteTemplateResponse> DeleteTemplateAsync(
         string templateId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -230,8 +230,17 @@ public partial class TemplatesClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<DeleteTemplateResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
         }
+
         {
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             throw new PogodocApiApiException(

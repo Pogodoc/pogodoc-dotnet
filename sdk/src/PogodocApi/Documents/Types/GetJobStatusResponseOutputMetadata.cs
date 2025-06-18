@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record GetJobStatusResponseOutputMetadata
 {
+    /// <summary>
+    /// Time taken to render the output
+    /// </summary>
     [JsonPropertyName("renderTime")]
     public required double RenderTime { get; set; }
 

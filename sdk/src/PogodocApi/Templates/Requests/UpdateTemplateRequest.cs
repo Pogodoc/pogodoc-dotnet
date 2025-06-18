@@ -11,6 +11,9 @@ public record UpdateTemplateRequest
     [JsonPropertyName("previewIds")]
     public required UpdateTemplateRequestPreviewIds PreviewIds { get; set; }
 
+    /// <summary>
+    /// ID by which the new template content is saved
+    /// </summary>
     [JsonPropertyName("contentId")]
     public required string ContentId { get; set; }
 

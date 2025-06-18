@@ -6,12 +6,21 @@ namespace PogodocApi;
 
 public record GetJobStatusResponse
 {
+    /// <summary>
+    /// Type of template to be rendered
+    /// </summary>
     [JsonPropertyName("type")]
     public required GetJobStatusResponseType Type { get; set; }
 
+    /// <summary>
+    /// ID of the render job
+    /// </summary>
     [JsonPropertyName("jobId")]
     public required string JobId { get; set; }
 
+    /// <summary>
+    /// Type of output to be rendered
+    /// </summary>
     [JsonPropertyName("target")]
     public required GetJobStatusResponseTarget Target { get; set; }
 

@@ -6,9 +6,15 @@ namespace PogodocApi;
 
 public record SaveCreatedTemplateRequestPreviewIds
 {
+    /// <summary>
+    /// ID of the job for the PNG preview
+    /// </summary>
     [JsonPropertyName("pngJobId")]
     public required string PngJobId { get; set; }
 
+    /// <summary>
+    /// ID of the job for the PDF preview
+    /// </summary>
     [JsonPropertyName("pdfJobId")]
     public required string PdfJobId { get; set; }
 

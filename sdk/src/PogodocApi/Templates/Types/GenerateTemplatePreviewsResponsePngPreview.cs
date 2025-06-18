@@ -6,9 +6,15 @@ namespace PogodocApi;
 
 public record GenerateTemplatePreviewsResponsePngPreview
 {
+    /// <summary>
+    /// URL of the rendered preview
+    /// </summary>
     [JsonPropertyName("url")]
-    public string? Url { get; set; }
+    public required string Url { get; set; }
 
+    /// <summary>
+    /// ID of the render job
+    /// </summary>
     [JsonPropertyName("jobId")]
     public required string JobId { get; set; }
 

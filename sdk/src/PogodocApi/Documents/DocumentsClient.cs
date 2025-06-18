@@ -123,65 +123,6 @@ public partial class DocumentsClient
     }
 
     /// <summary>
-    /// Generates a preview by creating a single-page render job, processing it immediately, and returning the output URL. Used for template visualization.
-    /// </summary>
-    /// <example><code>
-    /// await client.Documents.GenerateDocumentPreviewAsync(
-    ///     new GenerateDocumentPreviewRequest
-    ///     {
-    ///         TemplateId = "templateId",
-    ///         Type = GenerateDocumentPreviewRequestType.Docx,
-    ///         Data = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<GenerateDocumentPreviewResponse> GenerateDocumentPreviewAsync(
-        GenerateDocumentPreviewRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var _query = new Dictionary<string, object>();
-        _query["templateId"] = request.TemplateId;
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "documents/render-preview",
-                    Body = request,
-                    Query = _query,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<GenerateDocumentPreviewResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new PogodocApiException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            throw new PogodocApiApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <summary>
     /// Combines initialization and rendering in one step. Creates a job, uploads template/data directly, starts rendering, and adds the document to Strapi. Requires subscription check.
     /// </summary>
     /// <example><code>

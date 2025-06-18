@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record GetJobStatusResponseOutputData
 {
+    /// <summary>
+    /// URL of the rendered output
+    /// </summary>
     [JsonPropertyName("url")]
     public required string Url { get; set; }
 

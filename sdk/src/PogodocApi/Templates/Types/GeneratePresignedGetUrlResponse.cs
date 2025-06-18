@@ -6,6 +6,9 @@ namespace PogodocApi;
 
 public record GeneratePresignedGetUrlResponse
 {
+    /// <summary>
+    /// Presigned URL to get the template
+    /// </summary>
     [JsonPropertyName("presignedUrl")]
     public required string PresignedUrl { get; set; }
 

@@ -4,6 +4,9 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
+/// <summary>
+/// Format options for the rendered document
+/// </summary>
 public record InitializeRenderJobRequestFormatOpts
 {
     [JsonPropertyName("fromPage")]
@@ -15,6 +18,9 @@ public record InitializeRenderJobRequestFormatOpts
     [JsonPropertyName("format")]
     public InitializeRenderJobRequestFormatOptsFormat? Format { get; set; }
 
+    /// <summary>
+    /// Selector to wait for to know when the page is loaded and can be saved as pdf, png, etc.
+    /// </summary>
     [JsonPropertyName("waitForSelector")]
     public string? WaitForSelector { get; set; }
 
