@@ -9,8 +9,8 @@ public record GetTemplateIndexHtmlResponse
     /// <summary>
     /// Index.html file of the template
     /// </summary>
-    [JsonPropertyName("templateIndex")]
-    public required string TemplateIndex { get; set; }
+    [JsonPropertyName("indexHtml")]
+    public required string IndexHtml { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

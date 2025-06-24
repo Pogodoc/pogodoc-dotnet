@@ -8,8 +8,8 @@ public record UploadTemplateIndexHtmlRequest
     /// <summary>
     /// New index.html file of the template
     /// </summary>
-    [JsonPropertyName("templateIndex")]
-    public required string TemplateIndex { get; set; }
+    [JsonPropertyName("indexHtml")]
+    public required string IndexHtml { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

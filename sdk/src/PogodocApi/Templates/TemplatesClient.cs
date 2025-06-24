@@ -458,7 +458,7 @@ public partial class TemplatesClient
     /// <example><code>
     /// await client.Templates.UploadTemplateIndexHtmlAsync(
     ///     "templateId",
-    ///     new UploadTemplateIndexHtmlRequest { TemplateIndex = "templateIndex" }
+    ///     new UploadTemplateIndexHtmlRequest { IndexHtml = "indexHtml" }
     /// );
     /// </code></example>
     public async global::System.Threading.Tasks.Task UploadTemplateIndexHtmlAsync(
