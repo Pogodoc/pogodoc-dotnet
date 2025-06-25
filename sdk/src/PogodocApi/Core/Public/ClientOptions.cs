@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using PogodocApi.Core;
 
 namespace PogodocApi;
 
+[Serializable]
 public partial class ClientOptions
 {
     /// <summary>

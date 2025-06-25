@@ -3,6 +3,7 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
+[Serializable]
 public record UploadTemplateIndexHtmlRequest
 {
     /// <summary>

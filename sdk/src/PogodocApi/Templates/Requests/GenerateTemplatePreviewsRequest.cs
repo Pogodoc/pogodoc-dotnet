@@ -3,6 +3,7 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
+[Serializable]
 public record GenerateTemplatePreviewsRequest
 {
     /// <summary>
@@ -15,7 +16,7 @@ public record GenerateTemplatePreviewsRequest
     /// Sample data for the template
     /// </summary>
     [JsonPropertyName("data")]
-    public object Data { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> Data { get; set; } = new Dictionary<string, object?>();
 
     /// <summary>
     /// Format options for the rendered document

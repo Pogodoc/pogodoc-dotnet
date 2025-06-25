@@ -41,10 +41,10 @@ public class PogodocSDK : PogodocApiClient
             "application/zip"
         );
 
-        await Templates.ExtractTemplateFilesAsync(initResponse.JobId, null);
+        await Templates.ExtractTemplateFilesAsync(initResponse.TemplateId, null);
 
         var previewsResponse = await Templates.GenerateTemplatePreviewsAsync(
-            initResponse.JobId,
+            initResponse.TemplateId,
             new GenerateTemplatePreviewsRequest
             {
                 Type = Enum.Parse<GenerateTemplatePreviewsRequestType>(metadata.Type.ToString()),
@@ -53,7 +53,7 @@ public class PogodocSDK : PogodocApiClient
         );
 
         await Templates.SaveCreatedTemplateAsync(
-            initResponse.JobId,
+            initResponse.TemplateId,
             new SaveCreatedTemplateRequest
             {
                 TemplateInfo = metadata,
@@ -65,7 +65,7 @@ public class PogodocSDK : PogodocApiClient
             }
         );
 
-        return initResponse.JobId;
+        return initResponse.TemplateId;
     }
 
     public async Task<string> UpdateTemplateAsync(
@@ -95,7 +95,7 @@ public class PogodocSDK : PogodocApiClient
     {
         var initResponse = await Templates.InitializeTemplateCreationAsync();
 
-        var contentId = initResponse.JobId;
+        var contentId = initResponse.TemplateId;
 
         await S3Utils.UploadToS3WithUrlAsync(
             initResponse.PresignedTemplateUploadUrl,

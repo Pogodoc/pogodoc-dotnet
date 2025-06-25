@@ -3,13 +3,15 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
+[Serializable]
 public record StartImmediateRenderRequest
 {
     /// <summary>
     /// Sample data for the template
     /// </summary>
     [JsonPropertyName("data")]
-    public object StartImmediateRenderRequestData { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> StartImmediateRenderRequestData { get; set; } =
+        new Dictionary<string, object?>();
 
     /// <summary>
     /// Type of template to be rendered

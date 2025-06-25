@@ -4,8 +4,13 @@ using PogodocApi.Core;
 
 namespace PogodocApi;
 
-public record UpdateTemplateRequestTemplateInfo
+[Serializable]
+public record UpdateTemplateRequestTemplateInfo : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     /// <summary>
     /// Title of the template
     /// </summary>
@@ -28,7 +33,7 @@ public record UpdateTemplateRequestTemplateInfo
     /// Sample data for the template
     /// </summary>
     [JsonPropertyName("sampleData")]
-    public object SampleData { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?> SampleData { get; set; } = new Dictionary<string, object?>();
 
     [JsonPropertyName("sourceCode")]
     public string? SourceCode { get; set; }
@@ -40,15 +45,11 @@ public record UpdateTemplateRequestTemplateInfo
     public IEnumerable<UpdateTemplateRequestTemplateInfoCategoriesItem> Categories { get; set; } =
         new List<UpdateTemplateRequestTemplateInfoCategoriesItem>();
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    /// <remarks>
-    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
-    /// </remarks>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

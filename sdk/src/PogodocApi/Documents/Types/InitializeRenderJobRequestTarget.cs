@@ -1,30 +1,85 @@
-using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using PogodocApi.Core;
 
 namespace PogodocApi;
 
-[JsonConverter(typeof(EnumSerializer<InitializeRenderJobRequestTarget>))]
-public enum InitializeRenderJobRequestTarget
+[JsonConverter(typeof(StringEnumSerializer<InitializeRenderJobRequestTarget>))]
+[Serializable]
+public readonly record struct InitializeRenderJobRequestTarget : IStringEnum
 {
-    [EnumMember(Value = "pdf")]
-    Pdf,
+    public static readonly InitializeRenderJobRequestTarget Pdf = new(Values.Pdf);
 
-    [EnumMember(Value = "html")]
-    Html,
+    public static readonly InitializeRenderJobRequestTarget Html = new(Values.Html);
 
-    [EnumMember(Value = "docx")]
-    Docx,
+    public static readonly InitializeRenderJobRequestTarget Docx = new(Values.Docx);
 
-    [EnumMember(Value = "xlsx")]
-    Xlsx,
+    public static readonly InitializeRenderJobRequestTarget Xlsx = new(Values.Xlsx);
 
-    [EnumMember(Value = "pptx")]
-    Pptx,
+    public static readonly InitializeRenderJobRequestTarget Pptx = new(Values.Pptx);
 
-    [EnumMember(Value = "png")]
-    Png,
+    public static readonly InitializeRenderJobRequestTarget Png = new(Values.Png);
 
-    [EnumMember(Value = "jpg")]
-    Jpg,
+    public static readonly InitializeRenderJobRequestTarget Jpg = new(Values.Jpg);
+
+    public InitializeRenderJobRequestTarget(string value)
+    {
+        Value = value;
+    }
+
+    /// <summary>
+    /// The string value of the enum.
+    /// </summary>
+    public string Value { get; }
+
+    /// <summary>
+    /// Create a string enum with the given value.
+    /// </summary>
+    public static InitializeRenderJobRequestTarget FromCustom(string value)
+    {
+        return new InitializeRenderJobRequestTarget(value);
+    }
+
+    public bool Equals(string? other)
+    {
+        return Value.Equals(other);
+    }
+
+    /// <summary>
+    /// Returns the string value of the enum.
+    /// </summary>
+    public override string ToString()
+    {
+        return Value;
+    }
+
+    public static bool operator ==(InitializeRenderJobRequestTarget value1, string value2) =>
+        value1.Value.Equals(value2);
+
+    public static bool operator !=(InitializeRenderJobRequestTarget value1, string value2) =>
+        !value1.Value.Equals(value2);
+
+    public static explicit operator string(InitializeRenderJobRequestTarget value) => value.Value;
+
+    public static explicit operator InitializeRenderJobRequestTarget(string value) => new(value);
+
+    /// <summary>
+    /// Constant strings for enum values
+    /// </summary>
+    [Serializable]
+    public static class Values
+    {
+        public const string Pdf = "pdf";
+
+        public const string Html = "html";
+
+        public const string Docx = "docx";
+
+        public const string Xlsx = "xlsx";
+
+        public const string Pptx = "pptx";
+
+        public const string Png = "png";
+
+        public const string Jpg = "jpg";
+    }
 }

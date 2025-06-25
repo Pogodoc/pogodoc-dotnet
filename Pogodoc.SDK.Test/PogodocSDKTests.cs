@@ -5,8 +5,8 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DotNetEnv;
-using Pogodoc.Client;
-using Pogodoc.Client.Types;
+using Pogodoc.SDK;
+using Pogodoc.SDK.Types;
 using PogodocApi;
 using Xunit;
 using Xunit.Abstractions;
@@ -43,7 +43,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
     [Fact]
     public async Task CreateTemplateTest()
     {
-        var client = new PogodocClient(_env.ApiToken, _env.BaseUrl);
+        var client = new PogodocSDK(_env.ApiToken, _env.BaseUrl);
 
         var sampleData = ReadJsonFile("../../../../../../data/json_data/react.json");
 
@@ -63,7 +63,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
     [Fact]
     public async Task UpdateTemplateTest()
     {
-        var client = new PogodocClient(_env.ApiToken, _env.BaseUrl);
+        var client = new PogodocSDK(_env.ApiToken, _env.BaseUrl);
 
         var sampleData = ReadJsonFile("../../../../../../data/json_data/react.json");
 
@@ -84,7 +84,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
     [Fact]
     public async Task GenerateDocumentTest()
     {
-        var client = new PogodocClient(_env.ApiToken, _env.BaseUrl);
+        var client = new PogodocSDK(_env.ApiToken, _env.BaseUrl);
 
         var sampleData = ReadJsonFile("../../../../../../data/json_data/react.json");
         var props = new GenerateDocumentProps
@@ -107,7 +107,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
     [Fact]
     public async Task GenerateDocumentFromStringTemplateTest()
     {
-        var client = new PogodocClient(_env.ApiToken, _env.BaseUrl);
+        var client = new PogodocSDK(_env.ApiToken, _env.BaseUrl);
 
         var props = new GenerateDocumentProps
         {
