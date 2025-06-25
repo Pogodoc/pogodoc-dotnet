@@ -11,7 +11,7 @@ using PogodocApi.Core;
 
 public class PogodocSDK : PogodocApiClient
 {
-    public PogodocSDK(string token, string? baseUrl)
+    public PogodocSDK(string token, string? baseUrl= "https://api.pogodoc.com/v1")
         : base(token, new ClientOptions() { BaseUrl = baseUrl }) { }
 
     public async Task<string> SaveTemplateAsync(
