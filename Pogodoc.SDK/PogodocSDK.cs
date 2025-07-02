@@ -4,30 +4,33 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using DotNetEnv;
 using Pogodoc.SDK.Types;
 using Pogodoc.SDK.Utils;
 using PogodocApi;
 using PogodocApi.Core;
-using DotNetEnv;
 
 public class PogodocSDK : PogodocApiClient
 {
-
     public PogodocSDK(string? token = null, string? baseUrl = null)
-        : base(ResolveToken(token), new ClientOptions(){ BaseUrl = ResolveBaseUrl(baseUrl)})
-    {}
+        : base(ResolveToken(token), new ClientOptions() { BaseUrl = ResolveBaseUrl(baseUrl) }) { }
 
     private static string ResolveToken(string? token)
     {
         Env.Load();
-        return token ?? Environment.GetEnvironmentVariable("API_TOKEN")
-               ?? throw new ArgumentException("API token is required. Please provide it either as a parameter or set the API_TOKEN environment variable.");
+        return token
+            ?? Environment.GetEnvironmentVariable("POGODOC_API_TOKEN")
+            ?? throw new ArgumentException(
+                "API token is required. Please provide it either as a parameter or set the POGODOC_API_TOKEN environment variable."
+            );
     }
 
     private static string ResolveBaseUrl(string? baseUrl)
     {
         Env.Load();
-        return baseUrl ?? Environment.GetEnvironmentVariable("BASE_URL") ?? PogodocApiEnvironment.Default;
+        return baseUrl
+            ?? Environment.GetEnvironmentVariable("POGODOC_BASE_URL")
+            ?? PogodocApiEnvironment.Default;
     }
 
     public async Task<string> SaveTemplateAsync(
