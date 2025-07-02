@@ -1,31 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
-    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" >
+    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <IncludeAssets>PogodocApi.dll</IncludeAssets>
     </ProjectReference>
   </ItemGroup>
-
   <PropertyGroup>
     <PackageId>Pogodoc.SDK</PackageId>
     <Version>0.1.0</Version>
     <Authors>Martin Mitev</Authors>
     <Company>Pogodoc</Company>
-    <IsPackage>true</IsPackage>    
+    <IsPackage>true</IsPackage>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>  
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
-
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
-
-
   <ItemGroup>
     <PackageReference Include="PolySharp" Version="1.15.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,5 +31,6 @@
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="System.Net.Http" Version="[4.3.4,)" />
     <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" />
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
   </ItemGroup>
 </Project>
