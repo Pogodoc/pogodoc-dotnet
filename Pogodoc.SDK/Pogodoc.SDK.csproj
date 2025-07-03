@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj">
+    <ProjectReference Include="..\client\src\PogodocApi\PogodocApi.csproj">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <IncludeAssets>PogodocApi.dll</IncludeAssets>
     </ProjectReference>
