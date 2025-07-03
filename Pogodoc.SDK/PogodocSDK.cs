@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using DotNetEnv;
 using Pogodoc.SDK.Types;
 using Pogodoc.SDK.Utils;
 using PogodocApi;
@@ -17,7 +16,6 @@ public class PogodocSDK : PogodocApiClient
 
     private static string ResolveToken(string? token)
     {
-        Env.Load();
         return token
             ?? Environment.GetEnvironmentVariable("POGODOC_API_TOKEN")
             ?? throw new ArgumentException(
@@ -27,7 +25,6 @@ public class PogodocSDK : PogodocApiClient
 
     private static string ResolveBaseUrl(string? baseUrl)
     {
-        Env.Load();
         return baseUrl
             ?? Environment.GetEnvironmentVariable("POGODOC_BASE_URL")
             ?? PogodocApiEnvironment.Default;
