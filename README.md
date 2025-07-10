@@ -98,4 +98,8 @@ class Program
 
 ### License
 
-MIT License
+# MIT License
+
+## Pogodoc SDK for .NET
+
+> > > > > > > develop
