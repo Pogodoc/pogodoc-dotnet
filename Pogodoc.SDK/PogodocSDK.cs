@@ -1,13 +1,13 @@
-﻿namespace Pogodoc.SDK;
+﻿namespace Pogodoc;
 
 using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Pogodoc.SDK.Types;
-using Pogodoc.SDK.Utils;
-using PogodocApi;
-using PogodocApi.Core;
+using Pogodoc;
+using Pogodoc.Core;
+using Pogodoc.Types;
+using Pogodoc.Utils;
 
 public class PogodocSDK : PogodocApiClient
 {

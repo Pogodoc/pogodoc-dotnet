@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\client\src\PogodocApi\PogodocApi.csproj">
+    <ProjectReference Include="..\client\src\Pogodoc\Pogodoc.csproj">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <IncludeAssets>PogodocApi.dll</IncludeAssets>
+      <IncludeAssets>Pogodoc.dll</IncludeAssets>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-    <PackageId>Pogodoc.SDK</PackageId>
-    <Version>0.2.1</Version>
+    <PackageId>Pogodoc</PackageId>
+    <Version>0.2.2</Version>
     <Authors>Martin Mitev</Authors>
     <Company>Pogodoc</Company>
     <IsPackage>true</IsPackage>

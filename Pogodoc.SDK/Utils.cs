@@ -3,12 +3,16 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Pogodoc.SDK.Utils
-
+namespace Pogodoc.Utils
 {
     public static class S3Utils
     {
-        public static async Task UploadToS3WithUrlAsync(string presignedUrl, Stream payload, long payloadLength, string contentType)
+        public static async Task UploadToS3WithUrlAsync(
+            string presignedUrl,
+            Stream payload,
+            long payloadLength,
+            string contentType
+        )
         {
             using (var httpClient = new HttpClient())
             using (var streamContent = new StreamContent(payload))
@@ -21,4 +25,4 @@ namespace Pogodoc.SDK.Utils
             }
         }
     }
-} 
+}
