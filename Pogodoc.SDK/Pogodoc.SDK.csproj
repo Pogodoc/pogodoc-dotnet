@@ -6,7 +6,7 @@
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
-    <PackageId>Pogodoc</PackageId>
+    <PackageId>Pogodoc.SDK</PackageId>
     <Version>0.2.2</Version>
     <Authors>Martin Mitev</Authors>
     <Company>Pogodoc</Company>
