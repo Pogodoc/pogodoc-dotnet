@@ -1,6 +1,6 @@
 # Reference
 ## Templates
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">InitializeTemplateCreationAsync</a>() -> InitializeTemplateCreationResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">InitializeTemplateCreationAsync</a>() -> InitializeTemplateCreationResponse</code></summary>
 <dl>
 <dd>
 
@@ -39,7 +39,7 @@ await client.Templates.InitializeTemplateCreationAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">SaveCreatedTemplateAsync</a>(templateId, SaveCreatedTemplateRequest { ... })</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">SaveCreatedTemplateAsync</a>(templateId, SaveCreatedTemplateRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -122,7 +122,7 @@ await client.Templates.SaveCreatedTemplateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">UpdateTemplateAsync</a>(templateId, UpdateTemplateRequest { ... }) -> UpdateTemplateResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">UpdateTemplateAsync</a>(templateId, UpdateTemplateRequest { ... }) -> UpdateTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -206,7 +206,7 @@ await client.Templates.UpdateTemplateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">DeleteTemplateAsync</a>(templateId) -> DeleteTemplateResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">DeleteTemplateAsync</a>(templateId) -> DeleteTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -260,7 +260,7 @@ await client.Templates.DeleteTemplateAsync("templateId");
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">ExtractTemplateFilesAsync</a>(templateId)</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">ExtractTemplateFilesAsync</a>(templateId)</code></summary>
 <dl>
 <dd>
 
@@ -314,7 +314,7 @@ await client.Templates.ExtractTemplateFilesAsync("templateId");
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">GenerateTemplatePreviewsAsync</a>(templateId, GenerateTemplatePreviewsRequest { ... }) -> GenerateTemplatePreviewsResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">GenerateTemplatePreviewsAsync</a>(templateId, GenerateTemplatePreviewsRequest { ... }) -> GenerateTemplatePreviewsResponse</code></summary>
 <dl>
 <dd>
 
@@ -383,7 +383,7 @@ await client.Templates.GenerateTemplatePreviewsAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">GeneratePresignedGetUrlAsync</a>(templateId) -> GeneratePresignedGetUrlResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">GeneratePresignedGetUrlAsync</a>(templateId) -> GeneratePresignedGetUrlResponse</code></summary>
 <dl>
 <dd>
 
@@ -437,7 +437,7 @@ await client.Templates.GeneratePresignedGetUrlAsync("templateId");
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">GetTemplateIndexHtmlAsync</a>(templateId) -> GetTemplateIndexHtmlResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">GetTemplateIndexHtmlAsync</a>(templateId) -> GetTemplateIndexHtmlResponse</code></summary>
 <dl>
 <dd>
 
@@ -491,7 +491,7 @@ await client.Templates.GetTemplateIndexHtmlAsync("templateId");
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">UploadTemplateIndexHtmlAsync</a>(templateId, UploadTemplateIndexHtmlRequest { ... })</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">UploadTemplateIndexHtmlAsync</a>(templateId, UploadTemplateIndexHtmlRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -556,7 +556,7 @@ await client.Templates.UploadTemplateIndexHtmlAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Templates.<a href="/src/PogodocApi/Templates/TemplatesClient.cs">CloneTemplateAsync</a>(templateId) -> CloneTemplateResponse</code></summary>
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">CloneTemplateAsync</a>(templateId) -> CloneTemplateResponse</code></summary>
 <dl>
 <dd>
 
@@ -611,7 +611,7 @@ await client.Templates.CloneTemplateAsync("templateId");
 </details>
 
 ## Documents
-<details><summary><code>client.Documents.<a href="/src/PogodocApi/Documents/DocumentsClient.cs">InitializeRenderJobAsync</a>(InitializeRenderJobRequest { ... }) -> InitializeRenderJobResponse</code></summary>
+<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">InitializeRenderJobAsync</a>(InitializeRenderJobRequest { ... }) -> InitializeRenderJobResponse</code></summary>
 <dl>
 <dd>
 
@@ -671,7 +671,7 @@ await client.Documents.InitializeRenderJobAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Documents.<a href="/src/PogodocApi/Documents/DocumentsClient.cs">StartRenderJobAsync</a>(jobId, StartRenderJobRequest { ... }) -> StartRenderJobResponse</code></summary>
+<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">StartRenderJobAsync</a>(jobId, StartRenderJobRequest { ... }) -> StartRenderJobResponse</code></summary>
 <dl>
 <dd>
 
@@ -733,7 +733,7 @@ await client.Documents.StartRenderJobAsync("jobId", new StartRenderJobRequest())
 </dl>
 </details>
 
-<details><summary><code>client.Documents.<a href="/src/PogodocApi/Documents/DocumentsClient.cs">StartImmediateRenderAsync</a>(StartImmediateRenderRequest { ... }) -> StartImmediateRenderResponse</code></summary>
+<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">StartImmediateRenderAsync</a>(StartImmediateRenderRequest { ... }) -> StartImmediateRenderResponse</code></summary>
 <dl>
 <dd>
 
@@ -794,7 +794,7 @@ await client.Documents.StartImmediateRenderAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Documents.<a href="/src/PogodocApi/Documents/DocumentsClient.cs">GetJobStatusAsync</a>(jobId) -> GetJobStatusResponse</code></summary>
+<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">GetJobStatusAsync</a>(jobId) -> GetJobStatusResponse</code></summary>
 <dl>
 <dd>
 

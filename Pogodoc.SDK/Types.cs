@@ -1,6 +1,7 @@
-namespace Pogodoc.SDK.Types;
+using System.Runtime.CompilerServices;
+using Pogodoc;
 
-using PogodocApi;
+namespace Pogodoc.Types;
 
 // Helper classes to represent the structure from TypeScript
 

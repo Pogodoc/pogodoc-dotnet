@@ -1,7 +1,7 @@
 # Pogodoc C# Library
 
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Pogodoc%2FC%23)
-[![nuget shield](https://img.shields.io/nuget/v/PogodocApi)](https://nuget.org/packages/PogodocApi)
+[![nuget shield](https://img.shields.io/nuget/v/Pogodoc)](https://nuget.org/packages/Pogodoc)
 
 The Pogodoc C# library provides convenient access to the Pogodoc API from C#.
 
@@ -12,7 +12,7 @@ This SDK requires:
 ## Installation
 
 ```sh
-dotnet add package PogodocApi
+dotnet add package Pogodoc
 ```
 
 ## Usage
@@ -20,7 +20,7 @@ dotnet add package PogodocApi
 Instantiate and use the client with the following:
 
 ```csharp
-using PogodocApi;
+using Pogodoc;
 
 var client = new PogodocApiClient("TOKEN");
 await client.Templates.SaveCreatedTemplateAsync(
@@ -53,7 +53,7 @@ When the API returns a non-success status code (4xx or 5xx response), a subclass
 will be thrown.
 
 ```csharp
-using PogodocApi;
+using Pogodoc;
 
 try {
     var response = await client.Templates.SaveCreatedTemplateAsync(...);
