@@ -10,7 +10,7 @@ $ dotnet add package Pogodoc.SDK
 
 ### Setup
 
-To use the SDK you will need an API key which can be obtained from the [Pogodoc Dashboard](https://pogodoc.com)
+To use the SDK you will need an API key which can be obtained from the [Pogodoc Dashboard](https://app.pogodoc.com)
 
 ### Example
 
@@ -18,9 +18,8 @@ To use the SDK you will need an API key which can be obtained from the [Pogodoc 
 using System;
 using System.Text.Json;
 using DotNetEnv;
-using Pogodoc.SDK;
-using Pogodoc.SDK.Types;
-using PogodocApi;
+using Pogodoc;
+using Pogodoc.Types;
 
 class Program
 {
