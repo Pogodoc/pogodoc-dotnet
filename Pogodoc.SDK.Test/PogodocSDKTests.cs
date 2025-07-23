@@ -1,13 +1,12 @@
-﻿namespace Pogodoc.SDK.Tests;
+﻿namespace Pogodoc.Tests;
 
 using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DotNetEnv;
-using Pogodoc.SDK;
-using Pogodoc.SDK.Types;
-using PogodocApi;
+using Pogodoc;
+using Pogodoc.Types;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -15,6 +14,8 @@ public class EnvFixture
 {
     public string ApiToken { get; }
     public string BaseUrl { get; }
+
+    public string TemplateId { get; }
 
     public EnvFixture()
     {
@@ -24,8 +25,11 @@ public class EnvFixture
             Environment.GetEnvironmentVariable("POGODOC_API_TOKEN")
             ?? throw new InvalidOperationException("POGODOC_API_TOKEN not set");
         BaseUrl =
-            Environment.GetEnvironmentVariable("LAMBDA_BASE_URL")
-            ?? throw new InvalidOperationException("LAMBDA_BASE_URL not set");
+            Environment.GetEnvironmentVariable("POGODOC_BASE_URL")
+            ?? throw new InvalidOperationException("POGODOC_BASE_URL not set");
+        TemplateId =
+            Environment.GetEnvironmentVariable("TEMPLATE_ID")
+            ?? throw new InvalidOperationException("TEMPLATE_ID not set");
     }
 }
 
@@ -69,7 +73,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
 
         var template = await client.UpdateTemplateAsync(
             "../../../../../../data/templates/React-Demo-App.zip",
-            "a43bd040-fc6f-4fce-a65b-913cf059c51c",
+            "33be1434-8901-412e-8c35-f40912ca4b64",
             new UpdateTemplateRequestTemplateInfo
             {
                 Title = "Invoice-csharp-updated",
@@ -91,13 +95,12 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         {
             RenderConfig = new InitializeRenderJobRequest
             {
-                TemplateId = "a43bd040-fc6f-4fce-a65b-913cf059c51c",
+                TemplateId = "33be1434-8901-412e-8c35-f40912ca4b64",
                 Type = InitializeRenderJobRequestType.Html,
                 Target = InitializeRenderJobRequestTarget.Pdf,
                 Data = sampleData,
                 FormatOpts = new InitializeRenderJobRequestFormatOpts { FromPage = 1, ToPage = 2 },
             },
-            ShouldWaitForRenderCompletion = true,
         };
 
         var result = await client.GenerateDocumentAsync(props);
@@ -118,11 +121,52 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
                 Data = new Dictionary<string, object> { { "name", "Ferdzo" } },
             },
             Template = "<h1>Hello <%= name %></h1>",
-            ShouldWaitForRenderCompletion = true,
         };
 
         var result = await client.GenerateDocumentAsync(props);
         _output.WriteLine("STRING TEMPLATE RESULT: " + result.Output.Data.Url);
+    }
+
+    [Fact]
+    public async Task DocumentGenerationsTest()
+    {
+        var client = new PogodocSDK(_env.ApiToken, _env.BaseUrl);
+
+        var sampleData = new Dictionary<string, object> { { "name", "John Doe" } };
+
+        var generateDocumentProps = new GenerateDocumentProps
+        {
+            RenderConfig = new InitializeRenderJobRequest
+            {
+                TemplateId = _env.TemplateId,
+                Type = InitializeRenderJobRequestType.Html,
+                Target = InitializeRenderJobRequestTarget.Pdf,
+                Data = sampleData,
+            },
+        };
+
+        var immediateResult = await client.GenerateDocumentImmediateAsync(
+            new ImmediateGenerateDocumentProps
+            {
+                RenderConfig = new StartImmediateRenderRequest
+                {
+                    TemplateId = _env.TemplateId,
+                    Type = StartImmediateRenderRequestType.Html,
+                    Target = StartImmediateRenderRequestTarget.Pdf,
+                    StartImmediateRenderRequestData = sampleData,
+                },
+            }
+        );
+        _output.WriteLine("IMMEDIATE RESULT: " + immediateResult.Url);
+
+        var startResult = await client.StartGenerateDocumentAsync(generateDocumentProps);
+        _output.WriteLine("START RESULT: " + startResult.JobId);
+
+        var pollResult = await client.PollForJobCompletionAsync(startResult.JobId);
+        _output.WriteLine("POLL RESULT: " + pollResult.Status);
+
+        var generateResult = await client.GenerateDocumentAsync(generateDocumentProps);
+        _output.WriteLine("GENERATE RESULT: " + generateResult.Output.Data.Url);
     }
 
     private static Dictionary<string, object?>? ReadJsonFile(string filePath)

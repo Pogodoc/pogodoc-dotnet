@@ -17,6 +17,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Pogodoc.SDK\Pogodoc.SDK.csproj" />
-    <ProjectReference Include="..\sdk\src\PogodocApi\PogodocApi.csproj" />
+    <ProjectReference Include="..\client\src\Pogodoc\Pogodoc.csproj" />
   </ItemGroup>
 </Project>

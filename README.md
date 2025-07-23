@@ -23,69 +23,22 @@ using Pogodoc.Types;
 
 class Program
 {
-    private static Dictionary<string, object?>? ReadJsonFile(string filePath)
-    {
-        try
-        {
-            var jsonString = File.ReadAllText(filePath);
-            return JsonSerializer.Deserialize<Dictionary<string, object?>>(jsonString);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(
-                $"Error reading or parsing the JSON file at {filePath}: {ex.Message}"
-            );
-            return null;
-        }
-    }
-
     static void Main(string[] args)
     {
         Env.Load();
 
-        var client = new PogodocSDK();
-
-        var sampleData = ReadJsonFile("../../data/json_data/react.json");
-        var templatePath = "../../data/templates/React-Demo-App.zip";
-
-        var templateId = await client.SaveTemplateAsync(
-            templatePath,
-            new SaveCreatedTemplateRequestTemplateInfo
-            {
-                Title = "Invoice",
-                Description = "Invoice description",
-                Type = SaveCreatedTemplateRequestTemplateInfoType.React,
-                SampleData = sampleData,
-                Categories = [SaveCreatedTemplateRequestTemplateInfoCategoriesItem.Invoice],
-            }
-        );
-        Console.WriteLine("Created template id: " + templateId);
-
-        await client.UpdateTemplateAsync(
-            templatePath,
-            templateId,
-            new UpdateTemplateRequestTemplateInfo
-            {
-                Title = "Invoice Updated",
-                Description = "Description updated",
-                Type = UpdateTemplateRequestTemplateInfoType.React,
-                SampleData = sampleData,
-                Categories = [SaveCreatedTemplateRequestTemplateInfoCategoriesItem.Invoice],
-            }
-        );
-        Console.WriteLine("Template updated successfully");
+        var client = new PogodocSDK("YOUR_POGODOC_API_TOKEN");
 
         var response = await client.GenerateDocumentAsync(
             new GenerateDocumentProps
             {
                 RenderConfig = new InitializeRenderJobRequest
                 {
-                    TemplateId = templateId,
+                    TemplateId = "your-template-id",
                     Type = InitializeRenderJobRequestType.React,
                     Target = InitializeRenderJobRequestTarget.Pdf,
-                    Data = sampleData,
+                    Data = new Dictionary<string, object> { { "name", "John Doe" } },
                 },
-                ShouldWaitForRenderCompletion = true,
             }
         );
 
