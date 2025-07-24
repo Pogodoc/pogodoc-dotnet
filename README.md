@@ -15,9 +15,6 @@ To use the SDK you will need an API key which can be obtained from the [Pogodoc 
 ### Example
 
 ```cs
-using System;
-using System.Text.Json;
-using DotNetEnv;
 using Pogodoc;
 using Pogodoc.Types;
 
@@ -25,8 +22,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        Env.Load();
-
         var client = new PogodocSDK("YOUR_POGODOC_API_TOKEN");
 
         var response = await client.GenerateDocumentAsync(
