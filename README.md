@@ -30,9 +30,13 @@ class Program
                 RenderConfig = new InitializeRenderJobRequest
                 {
                     TemplateId = "your-template-id",
-                    Type = InitializeRenderJobRequestType.React,
+                    Type = InitializeRenderJobRequestType.Html,
                     Target = InitializeRenderJobRequestTarget.Pdf,
                     Data = new Dictionary<string, object> { { "name", "John Doe" } },
+                    FormatOpts = new InitializeRenderJobRequestFormatOpts
+                    {
+                        FromPage = 1,
+                    },
                 },
             }
         );
