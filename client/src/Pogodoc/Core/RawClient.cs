@@ -168,6 +168,10 @@ internal partial class RawClient(ClientOptions clientOptions)
         var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var isRetryableContent = IsRetryableContent(request);
 
+        // Clone the original request for the first attempt to avoid disposal issues
+        using var firstRequest = await CloneRequestAsync(request).ConfigureAwait(false);
+        var response = await httpClient.SendAsync(firstRequest, cancellationToken).ConfigureAwait(false);
+
         if (!isRetryableContent)
         {
             return new Pogodoc.Core.ApiResponse
@@ -186,6 +190,10 @@ internal partial class RawClient(ClientOptions clientOptions)
 
             var delayMs = Math.Min(BaseRetryDelay * (int)Math.Pow(2, i), MaxRetryDelayMs);
             await SystemTask.Delay(delayMs, cancellationToken).ConfigureAwait(false);
+
+            // Dispose the previous response before creating a new one
+            response.Dispose();
+
             using var retryRequest = await CloneRequestAsync(request).ConfigureAwait(false);
             response = await httpClient
                 .SendAsync(retryRequest, cancellationToken)
