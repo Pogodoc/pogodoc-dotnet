@@ -7,13 +7,6 @@ namespace Pogodoc;
 public record StartImmediateRenderRequest
 {
     /// <summary>
-    /// Sample data for the template
-    /// </summary>
-    [JsonPropertyName("data")]
-    public Dictionary<string, object?> StartImmediateRenderRequestData { get; set; } =
-        new Dictionary<string, object?>();
-
-    /// <summary>
     /// Type of template to be rendered
     /// </summary>
     [JsonPropertyName("type")]
@@ -38,10 +31,19 @@ public record StartImmediateRenderRequest
     public StartImmediateRenderRequestFormatOpts? FormatOpts { get; set; }
 
     /// <summary>
+    /// Sample data for the template
+    /// </summary>
+    [JsonPropertyName("data")]
+    public Dictionary<string, object?> Data { get; set; } = new Dictionary<string, object?>();
+
+    /// <summary>
     /// index.html or ejs file of the template as a string
     /// </summary>
     [JsonPropertyName("template")]
     public string? Template { get; set; }
+
+    [JsonPropertyName("uploadPresignedS3Url")]
+    public string? UploadPresignedS3Url { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

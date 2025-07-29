@@ -153,7 +153,7 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
                     TemplateId = _env.TemplateId,
                     Type = StartImmediateRenderRequestType.Html,
                     Target = StartImmediateRenderRequestTarget.Pdf,
-                    StartImmediateRenderRequestData = sampleData,
+                    Data = sampleData,
                 },
             }
         );

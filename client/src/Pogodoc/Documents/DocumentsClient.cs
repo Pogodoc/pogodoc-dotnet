@@ -129,9 +129,9 @@ public partial class DocumentsClient
     /// await client.Documents.StartImmediateRenderAsync(
     ///     new StartImmediateRenderRequest
     ///     {
-    ///         StartImmediateRenderRequestData = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
     ///         Type = StartImmediateRenderRequestType.Docx,
     ///         Target = StartImmediateRenderRequestTarget.Pdf,
+    ///         Data = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
     ///     }
     /// );
     /// </code></example>

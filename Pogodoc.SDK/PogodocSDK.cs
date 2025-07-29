@@ -243,9 +243,7 @@ public class PogodocSDK : PogodocApiClient
                 Type = props.RenderConfig.Type,
                 Target = props.RenderConfig.Target,
                 FormatOpts = props.RenderConfig.FormatOpts,
-                StartImmediateRenderRequestData = props
-                    .RenderConfig
-                    .StartImmediateRenderRequestData,
+                Data = props.RenderConfig.Data,
             }
         );
     }

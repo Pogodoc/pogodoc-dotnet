@@ -763,9 +763,9 @@ Combines initialization and rendering in one step. Creates a job, uploads templa
 await client.Documents.StartImmediateRenderAsync(
     new StartImmediateRenderRequest
     {
-        StartImmediateRenderRequestData = new Dictionary<string, object>() { { "key", "value" } },
         Type = StartImmediateRenderRequestType.Docx,
         Target = StartImmediateRenderRequestTarget.Pdf,
+        Data = new Dictionary<string, object>() { { "key", "value" } },
     }
 );
 ```
