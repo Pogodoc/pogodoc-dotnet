@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc", "Pogodoc\Pogodoc.csproj", "{E6572B1F-9159-4EDE-9CBA-B5ED0A511FCE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc", "Pogodoc\Pogodoc.csproj", "{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Test", "Pogodoc.Test\Pogodoc.Test.csproj", "{A487EAB3-616E-4229-84B0-800B1067EBE8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Test", "Pogodoc.Test\Pogodoc.Test.csproj", "{99F8DDE2-F36A-4234-A15C-99A713651F73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E6572B1F-9159-4EDE-9CBA-B5ED0A511FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6572B1F-9159-4EDE-9CBA-B5ED0A511FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6572B1F-9159-4EDE-9CBA-B5ED0A511FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6572B1F-9159-4EDE-9CBA-B5ED0A511FCE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A487EAB3-616E-4229-84B0-800B1067EBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A487EAB3-616E-4229-84B0-800B1067EBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A487EAB3-616E-4229-84B0-800B1067EBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A487EAB3-616E-4229-84B0-800B1067EBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
