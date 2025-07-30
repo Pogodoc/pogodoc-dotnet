@@ -165,12 +165,13 @@ internal partial class RawClient(ClientOptions clientOptions)
     {
         var httpClient = options?.HttpClient ?? Options.HttpClient;
         var maxRetries = options?.MaxRetries ?? Options.MaxRetries;
-        var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var isRetryableContent = IsRetryableContent(request);
 
         // Clone the original request for the first attempt to avoid disposal issues
         using var firstRequest = await CloneRequestAsync(request).ConfigureAwait(false);
-        var response = await httpClient.SendAsync(firstRequest, cancellationToken).ConfigureAwait(false);
+        var response = await httpClient
+            .SendAsync(firstRequest, cancellationToken)
+            .ConfigureAwait(false);
 
         if (!isRetryableContent)
         {
