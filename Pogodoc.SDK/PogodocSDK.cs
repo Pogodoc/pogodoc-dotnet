@@ -257,10 +257,8 @@ public class PogodocSDK : PogodocApiClient
     /// <para>You must provide either a `templateId` of a saved template or a `template` string in the <paramref name="props"/>.</para>
     /// </remarks>
     /// <param name="props">The properties for generating a document.</param>
-    /// <returns>A task that represents the asynchronous operation. The task result contains the initial job information.</returns>
-    public async Task<StartRenderJobResponse> StartGenerateDocumentAsync(
-        GenerateDocumentProps props
-    )
+    /// <returns>The job ID of the generated document.</returns>
+    public async Task<string> StartGenerateDocumentAsync(GenerateDocumentProps props)
     {
         var initRequest = new InitializeRenderJobRequest
         {
@@ -302,10 +300,12 @@ public class PogodocSDK : PogodocApiClient
             }
         }
 
-        return await Documents.StartRenderJobAsync(
+        var response = await Documents.StartRenderJobAsync(
             initResponse.JobId,
             new StartRenderJobRequest { UploadPresignedS3Url = props.UploadPresignedS3Url }
         );
+
+        return response.JobId;
     }
 
     /// <summary>
@@ -320,9 +320,9 @@ public class PogodocSDK : PogodocApiClient
     /// <returns>A task that represents the asynchronous operation. The task result contains the final job status, including the output URL.</returns>
     public async Task<GetJobStatusResponse> GenerateDocumentAsync(GenerateDocumentProps props)
     {
-        var initResponse = await StartGenerateDocumentAsync(props);
+        var jobId = await StartGenerateDocumentAsync(props);
 
-        return await PollForJobCompletionAsync(initResponse.JobId);
+        return await PollForJobCompletionAsync(jobId);
     }
 
     /// <summary>

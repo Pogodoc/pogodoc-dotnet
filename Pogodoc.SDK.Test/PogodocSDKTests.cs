@@ -159,10 +159,10 @@ public class PogodocClientTests : IClassFixture<EnvFixture>
         );
         _output.WriteLine("IMMEDIATE RESULT: " + immediateResult.Url);
 
-        var startResult = await client.StartGenerateDocumentAsync(generateDocumentProps);
-        _output.WriteLine("START RESULT: " + startResult.JobId);
+        var jobId = await client.StartGenerateDocumentAsync(generateDocumentProps);
+        _output.WriteLine("START RESULT: " + jobId);
 
-        var pollResult = await client.PollForJobCompletionAsync(startResult.JobId);
+        var pollResult = await client.PollForJobCompletionAsync(jobId);
         _output.WriteLine("POLL RESULT: " + pollResult.Status);
 
         var generateResult = await client.GenerateDocumentAsync(generateDocumentProps);
