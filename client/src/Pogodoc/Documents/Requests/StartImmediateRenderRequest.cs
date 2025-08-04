@@ -42,6 +42,9 @@ public record StartImmediateRenderRequest
     [JsonPropertyName("template")]
     public string? Template { get; set; }
 
+    /// <summary>
+    /// Presigned URL to upload the data for the render job to S3
+    /// </summary>
     [JsonPropertyName("uploadPresignedS3Url")]
     public string? UploadPresignedS3Url { get; set; }
 

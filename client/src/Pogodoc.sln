@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc", "Pogodoc\Pogodoc.csproj", "{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc", "Pogodoc\Pogodoc.csproj", "{221542B4-5D17-47CB-9B5E-5FB5A1BB97B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Test", "Pogodoc.Test\Pogodoc.Test.csproj", "{99F8DDE2-F36A-4234-A15C-99A713651F73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pogodoc.Test", "Pogodoc.Test\Pogodoc.Test.csproj", "{579E7E4C-C86D-493E-8C76-D95697DC7C69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A88B3CE-DF8B-4C1C-ABE6-086E6E68B915}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99F8DDE2-F36A-4234-A15C-99A713651F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221542B4-5D17-47CB-9B5E-5FB5A1BB97B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{221542B4-5D17-47CB-9B5E-5FB5A1BB97B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{221542B4-5D17-47CB-9B5E-5FB5A1BB97B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{221542B4-5D17-47CB-9B5E-5FB5A1BB97B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{579E7E4C-C86D-493E-8C76-D95697DC7C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{579E7E4C-C86D-493E-8C76-D95697DC7C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{579E7E4C-C86D-493E-8C76-D95697DC7C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{579E7E4C-C86D-493E-8C76-D95697DC7C69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
