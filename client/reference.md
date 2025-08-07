@@ -671,7 +671,7 @@ await client.Documents.InitializeRenderJobAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">StartRenderJobAsync</a>(jobId, StartRenderJobRequest { ... }) -> StartRenderJobResponse</code></summary>
+<details><summary><code>client.Documents.<a href="/src/Pogodoc/Documents/DocumentsClient.cs">StartRenderJobAsync</a>(jobId, StartRenderJobRequest { ... }) -> OneOf<StartRenderJobResponseError, StartRenderJobResponseOne></code></summary>
 <dl>
 <dd>
 

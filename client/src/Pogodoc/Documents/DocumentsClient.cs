@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
+using OneOf;
 using Pogodoc.Core;
 
 namespace Pogodoc;
@@ -75,7 +76,9 @@ public partial class DocumentsClient
     /// <example><code>
     /// await client.Documents.StartRenderJobAsync("jobId", new StartRenderJobRequest());
     /// </code></example>
-    public async Task<StartRenderJobResponse> StartRenderJobAsync(
+    public async Task<
+        OneOf<StartRenderJobResponseError, StartRenderJobResponseOne>
+    > StartRenderJobAsync(
         string jobId,
         StartRenderJobRequest request,
         RequestOptions? options = null,
@@ -104,7 +107,9 @@ public partial class DocumentsClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<StartRenderJobResponse>(responseBody)!;
+                return JsonUtils.Deserialize<
+                    OneOf<StartRenderJobResponseError, StartRenderJobResponseOne>
+                >(responseBody)!;
             }
             catch (JsonException e)
             {

@@ -4,18 +4,30 @@ using Pogodoc.Core;
 
 namespace Pogodoc;
 
+/// <summary>
+/// Format options for the rendered document
+/// </summary>
 [Serializable]
-public record StartRenderJobResponse : IJsonOnDeserialized
+public record StartRenderJobResponseErrorFormatOpts : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("fromPage")]
+    public double? FromPage { get; set; }
+
+    [JsonPropertyName("toPage")]
+    public double? ToPage { get; set; }
+
+    [JsonPropertyName("format")]
+    public StartRenderJobResponseErrorFormatOptsFormat? Format { get; set; }
+
     /// <summary>
-    /// ID of the render job
+    /// Selector to wait for to know when the page is loaded and can be saved as pdf, png, etc.
     /// </summary>
-    [JsonPropertyName("jobId")]
-    public required string JobId { get; set; }
+    [JsonPropertyName("waitForSelector")]
+    public string? WaitForSelector { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
