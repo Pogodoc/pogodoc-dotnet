@@ -62,79 +62,39 @@ internal partial class RawClient(ClientOptions clientOptions)
     {
         var clonedRequest = new HttpRequestMessage(request.Method, request.RequestUri);
         clonedRequest.Version = request.Version;
-
-        if (request.Content != null)
+        switch (request.Content)
         {
-            switch (request.Content)
-            {
-                case MultipartContent oldMultipartFormContent:
-                    var originalBoundary =
-                        oldMultipartFormContent
-                            .Headers.ContentType?.Parameters.FirstOrDefault(p =>
-                                p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase)
-                            )
-                            ?.Value?.Trim('"') ?? Guid.NewGuid().ToString();
-                    var newMultipartContent = oldMultipartFormContent switch
+            case MultipartContent oldMultipartFormContent:
+                var originalBoundary =
+                    oldMultipartFormContent
+                        .Headers.ContentType?.Parameters.First(p =>
+                            p.Name.Equals("boundary", StringComparison.OrdinalIgnoreCase)
+                        )
+                        .Value?.Trim('"') ?? Guid.NewGuid().ToString();
+                var newMultipartContent = oldMultipartFormContent switch
+                {
+                    MultipartFormDataContent => new MultipartFormDataContent(originalBoundary),
+                    _ => new MultipartContent(),
+                };
+                foreach (var content in oldMultipartFormContent)
+                {
+                    var ms = new MemoryStream();
+                    await content.CopyToAsync(ms).ConfigureAwait(false);
+                    ms.Position = 0;
+                    var newPart = new StreamContent(ms);
+                    foreach (var header in oldMultipartFormContent.Headers)
                     {
-                        MultipartFormDataContent => new MultipartFormDataContent(originalBoundary),
-                        _ => new MultipartContent(),
-                    };
-                    foreach (var content in oldMultipartFormContent)
-                    {
-                        var ms = new MemoryStream();
-                        await content.CopyToAsync(ms).ConfigureAwait(false);
-                        ms.Position = 0;
-                        var newPart = new StreamContent(ms);
-                        foreach (var header in content.Headers)
-                        {
-                            newPart.Headers.TryAddWithoutValidation(header.Key, header.Value);
-                        }
-                        newMultipartContent.Add(newPart);
+                        newPart.Headers.TryAddWithoutValidation(header.Key, header.Value);
                     }
-                    clonedRequest.Content = newMultipartContent;
-                    break;
 
-                case StringContent stringContent:
-                    var stringValue = await stringContent.ReadAsStringAsync().ConfigureAwait(false);
-                    var newStringContent = new StringContent(
-                        stringValue,
-                        Encoding.UTF8,
-                        stringContent.Headers.ContentType?.MediaType ?? "text/plain"
-                    );
-                    CopyContentHeaders(stringContent, newStringContent);
-                    clonedRequest.Content = newStringContent;
-                    break;
+                    newMultipartContent.Add(newPart);
+                }
 
-                case FormUrlEncodedContent formContent:
-                    var formString = await formContent.ReadAsStringAsync().ConfigureAwait(false);
-                    var formData = System.Web.HttpUtility.ParseQueryString(formString);
-                    var keyValuePairs = formData.AllKeys.Select(key => new KeyValuePair<
-                        string,
-                        string
-                    >(key ?? string.Empty, formData[key] ?? string.Empty));
-                    var newFormContent = new FormUrlEncodedContent(keyValuePairs);
-                    CopyContentHeaders(formContent, newFormContent);
-                    clonedRequest.Content = newFormContent;
-                    break;
-
-                case ByteArrayContent byteArrayContent:
-                    var byteArray = await byteArrayContent
-                        .ReadAsByteArrayAsync()
-                        .ConfigureAwait(false);
-                    var newByteArrayContent = new ByteArrayContent(byteArray);
-                    CopyContentHeaders(byteArrayContent, newByteArrayContent);
-                    clonedRequest.Content = newByteArrayContent;
-                    break;
-
-                default:
-                    var contentBytes = await request
-                        .Content.ReadAsByteArrayAsync()
-                        .ConfigureAwait(false);
-                    var newContent = new ByteArrayContent(contentBytes);
-                    CopyContentHeaders(request.Content, newContent);
-                    clonedRequest.Content = newContent;
-                    break;
-            }
+                clonedRequest.Content = newMultipartContent;
+                break;
+            default:
+                clonedRequest.Content = request.Content;
+                break;
         }
 
         foreach (var header in request.Headers)
@@ -143,14 +103,6 @@ internal partial class RawClient(ClientOptions clientOptions)
         }
 
         return clonedRequest;
-    }
-
-    private static void CopyContentHeaders(HttpContent source, HttpContent destination)
-    {
-        foreach (var header in source.Headers)
-        {
-            destination.Headers.TryAddWithoutValidation(header.Key, header.Value);
-        }
     }
 
     /// <summary>
@@ -165,13 +117,8 @@ internal partial class RawClient(ClientOptions clientOptions)
     {
         var httpClient = options?.HttpClient ?? Options.HttpClient;
         var maxRetries = options?.MaxRetries ?? Options.MaxRetries;
+        var response = await httpClient.SendAsync(request, cancellationToken).ConfigureAwait(false);
         var isRetryableContent = IsRetryableContent(request);
-
-        // Clone the original request for the first attempt to avoid disposal issues
-        using var firstRequest = await CloneRequestAsync(request).ConfigureAwait(false);
-        var response = await httpClient
-            .SendAsync(firstRequest, cancellationToken)
-            .ConfigureAwait(false);
 
         if (!isRetryableContent)
         {
@@ -191,10 +138,6 @@ internal partial class RawClient(ClientOptions clientOptions)
 
             var delayMs = Math.Min(BaseRetryDelay * (int)Math.Pow(2, i), MaxRetryDelayMs);
             await SystemTask.Delay(delayMs, cancellationToken).ConfigureAwait(false);
-
-            // Dispose the previous response before creating a new one
-            response.Dispose();
-
             using var retryRequest = await CloneRequestAsync(request).ConfigureAwait(false);
             response = await httpClient
                 .SendAsync(retryRequest, cancellationToken)
