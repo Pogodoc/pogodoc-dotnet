@@ -5,17 +5,17 @@ using Pogodoc.Core;
 namespace Pogodoc;
 
 [Serializable]
-public record StartRenderJobResponseErrorOutput : IJsonOnDeserialized
+public record StartRenderJobResponseOutputMetadata : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("data")]
-    public required StartRenderJobResponseErrorOutputData Data { get; set; }
-
-    [JsonPropertyName("metadata")]
-    public required StartRenderJobResponseErrorOutputMetadata Metadata { get; set; }
+    /// <summary>
+    /// Time taken to render the output
+    /// </summary>
+    [JsonPropertyName("renderTime")]
+    public required double RenderTime { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

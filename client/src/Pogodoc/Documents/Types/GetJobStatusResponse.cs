@@ -45,7 +45,7 @@ public record GetJobStatusResponse : IJsonOnDeserialized
     /// Status of the render job
     /// </summary>
     [JsonPropertyName("status")]
-    public string? Status { get; set; }
+    public required string Status { get; set; }
 
     /// <summary>
     /// Whether the render job was successful

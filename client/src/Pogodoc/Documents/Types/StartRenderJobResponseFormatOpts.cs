@@ -8,7 +8,7 @@ namespace Pogodoc;
 /// Format options for the rendered document
 /// </summary>
 [Serializable]
-public record StartRenderJobResponseErrorFormatOpts : IJsonOnDeserialized
+public record StartRenderJobResponseFormatOpts : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
@@ -21,7 +21,7 @@ public record StartRenderJobResponseErrorFormatOpts : IJsonOnDeserialized
     public double? ToPage { get; set; }
 
     [JsonPropertyName("format")]
-    public StartRenderJobResponseErrorFormatOptsFormat? Format { get; set; }
+    public StartRenderJobResponseFormatOptsFormat? Format { get; set; }
 
     /// <summary>
     /// Selector to wait for to know when the page is loaded and can be saved as pdf, png, etc.

@@ -7,7 +7,7 @@
   </ItemGroup>
   <PropertyGroup>
     <PackageId>Pogodoc.SDK</PackageId>
-    <Version>0.2.6</Version>
+    <Version>0.2.7</Version>
     <Authors>Martin Mitev</Authors>
     <Company>Pogodoc</Company>
     <IsPackage>true</IsPackage>

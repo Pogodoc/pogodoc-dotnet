@@ -5,7 +5,7 @@ using Pogodoc.Core;
 namespace Pogodoc;
 
 [Serializable]
-public record StartRenderJobResponseErrorOutputData : IJsonOnDeserialized
+public record StartRenderJobResponseOutputData : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =

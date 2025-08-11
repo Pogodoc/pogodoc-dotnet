@@ -305,10 +305,7 @@ public class PogodocSDK : PogodocApiClient
             new StartRenderJobRequest { UploadPresignedS3Url = props.UploadPresignedS3Url }
         );
 
-        return response.Match(
-            error => throw new Exception($"Failed to start render job. Error: {error}"),
-            success => success.JobId
-        );
+        return response.JobId;
     }
 
     /// <summary>

@@ -5,7 +5,7 @@ using Pogodoc.Core;
 namespace Pogodoc;
 
 [Serializable]
-public record StartRenderJobResponseError : IJsonOnDeserialized
+public record StartRenderJobResponse : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
@@ -24,10 +24,10 @@ public record StartRenderJobResponseError : IJsonOnDeserialized
     public string? TemplateId { get; set; }
 
     /// <summary>
-    /// Target of the render job
+    /// Type of output to be rendered
     /// </summary>
     [JsonPropertyName("target")]
-    public required string Target { get; set; }
+    public StartRenderJobResponseTarget? Target { get; set; }
 
     /// <summary>
     /// Presigned URL to upload the rendered output to S3
@@ -39,7 +39,7 @@ public record StartRenderJobResponseError : IJsonOnDeserialized
     /// Format options for the rendered document
     /// </summary>
     [JsonPropertyName("formatOpts")]
-    public StartRenderJobResponseErrorFormatOpts? FormatOpts { get; set; }
+    public StartRenderJobResponseFormatOpts? FormatOpts { get; set; }
 
     /// <summary>
     /// Status of the render job
@@ -54,7 +54,7 @@ public record StartRenderJobResponseError : IJsonOnDeserialized
     public bool? Success { get; set; }
 
     [JsonPropertyName("output")]
-    public StartRenderJobResponseErrorOutput? Output { get; set; }
+    public StartRenderJobResponseOutput? Output { get; set; }
 
     /// <summary>
     /// Error that occurred during render
