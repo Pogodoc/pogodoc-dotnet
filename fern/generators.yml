@@ -1,0 +1,14 @@
+api:
+  specs:
+    - openapi: ./openapi/openApiSpec.json
+default-group: local
+groups:
+  local:
+    generators:
+      - name: fernapi/fern-csharp-sdk
+        version: 2.1.0
+        config:
+          namespace: Pogodoc
+        output:
+          location: local-file-system
+          path: ../client
