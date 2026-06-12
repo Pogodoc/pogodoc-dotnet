@@ -18,28 +18,10 @@ public record StartRenderJobResponse : IJsonOnDeserialized
     public required string JobId { get; set; }
 
     /// <summary>
-    /// ID of the template being used
-    /// </summary>
-    [JsonPropertyName("templateId")]
-    public string? TemplateId { get; set; }
-
-    /// <summary>
     /// Type of output to be rendered
     /// </summary>
     [JsonPropertyName("target")]
     public StartRenderJobResponseTarget? Target { get; set; }
-
-    /// <summary>
-    /// Presigned URL to upload the rendered output to S3
-    /// </summary>
-    [JsonPropertyName("uploadPresignedS3Url")]
-    public string? UploadPresignedS3Url { get; set; }
-
-    /// <summary>
-    /// Format options for the rendered document
-    /// </summary>
-    [JsonPropertyName("formatOpts")]
-    public StartRenderJobResponseFormatOpts? FormatOpts { get; set; }
 
     /// <summary>
     /// Status of the render job

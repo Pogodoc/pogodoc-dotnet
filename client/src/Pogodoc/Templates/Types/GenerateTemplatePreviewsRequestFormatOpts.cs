@@ -29,6 +29,12 @@ public record GenerateTemplatePreviewsRequestFormatOpts : IJsonOnDeserialized
     [JsonPropertyName("waitForSelector")]
     public string? WaitForSelector { get; set; }
 
+    [JsonPropertyName("orientation")]
+    public GenerateTemplatePreviewsRequestFormatOptsOrientation? Orientation { get; set; }
+
+    [JsonPropertyName("dimensions")]
+    public GenerateTemplatePreviewsRequestFormatOptsDimensions? Dimensions { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

@@ -19,7 +19,9 @@ public readonly record struct SaveCreatedTemplateRequestTemplateInfoType : IStri
 
     public static readonly SaveCreatedTemplateRequestTemplateInfoType Latex = new(Values.Latex);
 
-    public static readonly SaveCreatedTemplateRequestTemplateInfoType React = new(Values.React);
+    public static readonly SaveCreatedTemplateRequestTemplateInfoType Framework = new(
+        Values.Framework
+    );
 
     public SaveCreatedTemplateRequestTemplateInfoType(string value)
     {
@@ -86,6 +88,6 @@ public readonly record struct SaveCreatedTemplateRequestTemplateInfoType : IStri
 
         public const string Latex = "latex";
 
-        public const string React = "react";
+        public const string Framework = "framework";
     }
 }

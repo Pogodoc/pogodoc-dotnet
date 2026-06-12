@@ -3,7 +3,18 @@
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=Pogodoc%2FC%23)
 [![nuget shield](https://img.shields.io/nuget/v/Pogodoc)](https://nuget.org/packages/Pogodoc)
 
-The Pogodoc C# library provides convenient access to the Pogodoc API from C#.
+The Pogodoc C# library provides convenient access to the Pogodoc APIs from C#.
+
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Exception Handling](#exception-handling)
+- [Advanced](#advanced)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+- [Contributing](#contributing)
 
 ## Requirements
 
