@@ -5,17 +5,17 @@ using Pogodoc.Core;
 namespace Pogodoc;
 
 [Serializable]
-public record UpdateTemplateRequestPreviewIds : IJsonOnDeserialized
+public record GenerateTemplatePreviewsRequestFormatOptsDimensions : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("pngJobId")]
-    public required string PngJobId { get; set; }
+    [JsonPropertyName("width")]
+    public required double Width { get; set; }
 
-    [JsonPropertyName("pdfJobId")]
-    public required string PdfJobId { get; set; }
+    [JsonPropertyName("height")]
+    public required double Height { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -19,7 +19,7 @@ public readonly record struct InitializeRenderJobRequestType : IStringEnum
 
     public static readonly InitializeRenderJobRequestType Latex = new(Values.Latex);
 
-    public static readonly InitializeRenderJobRequestType React = new(Values.React);
+    public static readonly InitializeRenderJobRequestType Framework = new(Values.Framework);
 
     public InitializeRenderJobRequestType(string value)
     {
@@ -80,6 +80,6 @@ public readonly record struct InitializeRenderJobRequestType : IStringEnum
 
         public const string Latex = "latex";
 
-        public const string React = "react";
+        public const string Framework = "framework";
     }
 }

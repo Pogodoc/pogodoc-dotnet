@@ -15,25 +15,25 @@ public record UpdateTemplateRequestTemplateInfo : IJsonOnDeserialized
     /// Title of the template
     /// </summary>
     [JsonPropertyName("title")]
-    public required string Title { get; set; }
+    public string? Title { get; set; }
 
     /// <summary>
     /// Description of the template
     /// </summary>
     [JsonPropertyName("description")]
-    public required string Description { get; set; }
+    public string? Description { get; set; }
 
     /// <summary>
     /// Type of template to be rendered
     /// </summary>
     [JsonPropertyName("type")]
-    public required UpdateTemplateRequestTemplateInfoType Type { get; set; }
+    public UpdateTemplateRequestTemplateInfoType? Type { get; set; }
 
     /// <summary>
     /// Sample data for the template
     /// </summary>
     [JsonPropertyName("sampleData")]
-    public Dictionary<string, object?> SampleData { get; set; } = new Dictionary<string, object?>();
+    public Dictionary<string, object?>? SampleData { get; set; }
 
     [JsonPropertyName("sourceCode")]
     public string? SourceCode { get; set; }
@@ -42,8 +42,13 @@ public record UpdateTemplateRequestTemplateInfo : IJsonOnDeserialized
     /// Categories of the template
     /// </summary>
     [JsonPropertyName("categories")]
-    public IEnumerable<UpdateTemplateRequestTemplateInfoCategoriesItem> Categories { get; set; } =
-        new List<UpdateTemplateRequestTemplateInfoCategoriesItem>();
+    public IEnumerable<UpdateTemplateRequestTemplateInfoCategoriesItem>? Categories { get; set; }
+
+    [JsonPropertyName("orientation")]
+    public UpdateTemplateRequestTemplateInfoOrientation? Orientation { get; set; }
+
+    [JsonPropertyName("dimensions")]
+    public UpdateTemplateRequestTemplateInfoDimensions? Dimensions { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
