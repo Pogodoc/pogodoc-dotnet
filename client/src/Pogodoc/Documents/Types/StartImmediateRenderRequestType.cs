@@ -19,7 +19,7 @@ public readonly record struct StartImmediateRenderRequestType : IStringEnum
 
     public static readonly StartImmediateRenderRequestType Latex = new(Values.Latex);
 
-    public static readonly StartImmediateRenderRequestType React = new(Values.React);
+    public static readonly StartImmediateRenderRequestType Framework = new(Values.Framework);
 
     public StartImmediateRenderRequestType(string value)
     {
@@ -80,6 +80,6 @@ public readonly record struct StartImmediateRenderRequestType : IStringEnum
 
         public const string Latex = "latex";
 
-        public const string React = "react";
+        public const string Framework = "framework";
     }
 }
