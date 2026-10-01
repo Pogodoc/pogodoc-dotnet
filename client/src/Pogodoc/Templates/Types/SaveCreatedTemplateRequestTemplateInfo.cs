@@ -45,6 +45,12 @@ public record SaveCreatedTemplateRequestTemplateInfo : IJsonOnDeserialized
     public IEnumerable<SaveCreatedTemplateRequestTemplateInfoCategoriesItem> Categories { get; set; } =
         new List<SaveCreatedTemplateRequestTemplateInfoCategoriesItem>();
 
+    [JsonPropertyName("orientation")]
+    public SaveCreatedTemplateRequestTemplateInfoOrientation? Orientation { get; set; }
+
+    [JsonPropertyName("dimensions")]
+    public SaveCreatedTemplateRequestTemplateInfoDimensions? Dimensions { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 
