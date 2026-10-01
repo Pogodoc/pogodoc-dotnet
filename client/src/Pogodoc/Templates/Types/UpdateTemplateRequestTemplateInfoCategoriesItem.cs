@@ -19,8 +19,58 @@ public readonly record struct UpdateTemplateRequestTemplateInfoCategoriesItem : 
 
     public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Cv = new(Values.Cv);
 
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Receipt = new(
+        Values.Receipt
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Order = new(
+        Values.Order
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Contract = new(
+        Values.Contract
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Certificate = new(
+        Values.Certificate
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Statement = new(
+        Values.Statement
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Brochure = new(
+        Values.Brochure
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Warranty = new(
+        Values.Warranty
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Poster = new(
+        Values.Poster
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Menu = new(Values.Menu);
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Catalog = new(
+        Values.Catalog
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Packaging = new(
+        Values.Packaging
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Advertisement = new(
+        Values.Advertisement
+    );
+
     public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Other = new(
         Values.Other
+    );
+
+    public static readonly UpdateTemplateRequestTemplateInfoCategoriesItem Favorite = new(
+        Values.Favorite
     );
 
     public UpdateTemplateRequestTemplateInfoCategoriesItem(string value)
@@ -84,6 +134,32 @@ public readonly record struct UpdateTemplateRequestTemplateInfoCategoriesItem : 
 
         public const string Cv = "cv";
 
+        public const string Receipt = "receipt";
+
+        public const string Order = "order";
+
+        public const string Contract = "contract";
+
+        public const string Certificate = "certificate";
+
+        public const string Statement = "statement";
+
+        public const string Brochure = "brochure";
+
+        public const string Warranty = "warranty";
+
+        public const string Poster = "poster";
+
+        public const string Menu = "menu";
+
+        public const string Catalog = "catalog";
+
+        public const string Packaging = "packaging";
+
+        public const string Advertisement = "advertisement";
+
         public const string Other = "other";
+
+        public const string Favorite = "favorite";
     }
 }

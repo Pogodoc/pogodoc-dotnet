@@ -39,6 +39,60 @@ await client.Templates.InitializeTemplateCreationAsync();
 </dl>
 </details>
 
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">GetTemplateByIdAsync</a>(templateId) -> GetTemplateByIdResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Fetches a single template by its ID for the authenticated user.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Templates.GetTemplateByIdAsync("templateId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**templateId:** `string` — UUID of the template
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">SaveCreatedTemplateAsync</a>(templateId, SaveCreatedTemplateRequest { ... })</code></summary>
 <dl>
 <dd>
@@ -149,29 +203,7 @@ Updates template content, handles S3 storage cleanup for old content, updates te
 <dd>
 
 ```csharp
-await client.Templates.UpdateTemplateAsync(
-    "templateId",
-    new UpdateTemplateRequest
-    {
-        TemplateInfo = new UpdateTemplateRequestTemplateInfo
-        {
-            Title = "title",
-            Description = "description",
-            Type = UpdateTemplateRequestTemplateInfoType.Docx,
-            SampleData = new Dictionary<string, object>() { { "key", "value" } },
-            Categories = new List<UpdateTemplateRequestTemplateInfoCategoriesItem>()
-            {
-                UpdateTemplateRequestTemplateInfoCategoriesItem.Invoice,
-            },
-        },
-        PreviewIds = new UpdateTemplateRequestPreviewIds
-        {
-            PngJobId = "pngJobId",
-            PdfJobId = "pdfJobId",
-        },
-        ContentId = "contentId",
-    }
-);
+await client.Templates.UpdateTemplateAsync("templateId", new UpdateTemplateRequest());
 ```
 </dd>
 </dl>
@@ -599,6 +631,60 @@ await client.Templates.CloneTemplateAsync("templateId");
 <dd>
 
 **templateId:** `string` — ID of the template to be used
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Templates.<a href="/src/Pogodoc/Templates/TemplatesClient.cs">GetUserTemplatesAsync</a>(GetUserTemplatesRequest { ... }) -> GetUserTemplatesResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Fetches all templates belonging to the authenticated user. Optionally filter by category.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Templates.GetUserTemplatesAsync(new GetUserTemplatesRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GetUserTemplatesRequest` 
     
 </dd>
 </dl>
