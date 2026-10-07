@@ -12,7 +12,7 @@ public record UpdateTemplateResponse : IJsonOnDeserialized
         new Dictionary<string, JsonElement>();
 
     [JsonPropertyName("newContentId")]
-    public required string NewContentId { get; set; }
+    public string? NewContentId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
