@@ -62,6 +62,56 @@ public partial class TemplatesClient
     }
 
     /// <summary>
+    /// Fetches a single template by its ID for the authenticated user.
+    /// </summary>
+    /// <example><code>
+    /// await client.Templates.GetTemplateByIdAsync("templateId");
+    /// </code></example>
+    public async Task<GetTemplateByIdResponse> GetTemplateByIdAsync(
+        string templateId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "templates/{0}",
+                        ValueConvert.ToPathParameterString(templateId)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetTemplateByIdResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <summary>
     /// Finalizes template creation by saving template info to Strapi, copying preview files to permanent storage, and creating template index. Removes unfinished tag upon completion.
     /// </summary>
     /// <example><code>
@@ -130,29 +180,7 @@ public partial class TemplatesClient
     /// Updates template content, handles S3 storage cleanup for old content, updates template metadata in Strapi, and manages preview files. Removes unfinished tags after successful update.
     /// </summary>
     /// <example><code>
-    /// await client.Templates.UpdateTemplateAsync(
-    ///     "templateId",
-    ///     new UpdateTemplateRequest
-    ///     {
-    ///         TemplateInfo = new UpdateTemplateRequestTemplateInfo
-    ///         {
-    ///             Title = "title",
-    ///             Description = "description",
-    ///             Type = UpdateTemplateRequestTemplateInfoType.Docx,
-    ///             SampleData = new Dictionary&lt;string, object&gt;() { { "key", "value" } },
-    ///             Categories = new List&lt;UpdateTemplateRequestTemplateInfoCategoriesItem&gt;()
-    ///             {
-    ///                 UpdateTemplateRequestTemplateInfoCategoriesItem.Invoice,
-    ///             },
-    ///         },
-    ///         PreviewIds = new UpdateTemplateRequestPreviewIds
-    ///         {
-    ///             PngJobId = "pngJobId",
-    ///             PdfJobId = "pdfJobId",
-    ///         },
-    ///         ContentId = "contentId",
-    ///     }
-    /// );
+    /// await client.Templates.UpdateTemplateAsync("templateId", new UpdateTemplateRequest());
     /// </code></example>
     public async Task<UpdateTemplateResponse> UpdateTemplateAsync(
         string templateId,
@@ -532,6 +560,71 @@ public partial class TemplatesClient
             try
             {
                 return JsonUtils.Deserialize<CloneTemplateResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new PogodocApiException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            throw new PogodocApiApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <summary>
+    /// Fetches all templates belonging to the authenticated user. Optionally filter by category.
+    /// </summary>
+    /// <example><code>
+    /// await client.Templates.GetUserTemplatesAsync(new GetUserTemplatesRequest());
+    /// </code></example>
+    public async Task<GetUserTemplatesResponse> GetUserTemplatesAsync(
+        GetUserTemplatesRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.Category != null)
+        {
+            _query["category"] = request.Category.Value.Stringify();
+        }
+        if (request.Search != null)
+        {
+            _query["search"] = request.Search;
+        }
+        if (request.Type != null)
+        {
+            _query["type"] = request.Type.Value.Stringify();
+        }
+        if (request.Sort != null)
+        {
+            _query["sort"] = request.Sort.Value.Stringify();
+        }
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "templates",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GetUserTemplatesResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
