@@ -29,6 +29,12 @@ public record StartImmediateRenderRequestFormatOpts : IJsonOnDeserialized
     [JsonPropertyName("waitForSelector")]
     public string? WaitForSelector { get; set; }
 
+    [JsonPropertyName("orientation")]
+    public StartImmediateRenderRequestFormatOptsOrientation? Orientation { get; set; }
+
+    [JsonPropertyName("dimensions")]
+    public StartImmediateRenderRequestFormatOptsDimensions? Dimensions { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 

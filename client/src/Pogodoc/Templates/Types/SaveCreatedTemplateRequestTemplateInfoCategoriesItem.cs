@@ -21,8 +21,60 @@ public readonly record struct SaveCreatedTemplateRequestTemplateInfoCategoriesIt
 
     public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Cv = new(Values.Cv);
 
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Receipt = new(
+        Values.Receipt
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Order = new(
+        Values.Order
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Contract = new(
+        Values.Contract
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Certificate = new(
+        Values.Certificate
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Statement = new(
+        Values.Statement
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Brochure = new(
+        Values.Brochure
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Warranty = new(
+        Values.Warranty
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Poster = new(
+        Values.Poster
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Menu = new(
+        Values.Menu
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Catalog = new(
+        Values.Catalog
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Packaging = new(
+        Values.Packaging
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Advertisement = new(
+        Values.Advertisement
+    );
+
     public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Other = new(
         Values.Other
+    );
+
+    public static readonly SaveCreatedTemplateRequestTemplateInfoCategoriesItem Favorite = new(
+        Values.Favorite
     );
 
     public SaveCreatedTemplateRequestTemplateInfoCategoriesItem(string value)
@@ -88,6 +140,32 @@ public readonly record struct SaveCreatedTemplateRequestTemplateInfoCategoriesIt
 
         public const string Cv = "cv";
 
+        public const string Receipt = "receipt";
+
+        public const string Order = "order";
+
+        public const string Contract = "contract";
+
+        public const string Certificate = "certificate";
+
+        public const string Statement = "statement";
+
+        public const string Brochure = "brochure";
+
+        public const string Warranty = "warranty";
+
+        public const string Poster = "poster";
+
+        public const string Menu = "menu";
+
+        public const string Catalog = "catalog";
+
+        public const string Packaging = "packaging";
+
+        public const string Advertisement = "advertisement";
+
         public const string Other = "other";
+
+        public const string Favorite = "favorite";
     }
 }

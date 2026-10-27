@@ -19,7 +19,7 @@ public readonly record struct GenerateTemplatePreviewsRequestType : IStringEnum
 
     public static readonly GenerateTemplatePreviewsRequestType Latex = new(Values.Latex);
 
-    public static readonly GenerateTemplatePreviewsRequestType React = new(Values.React);
+    public static readonly GenerateTemplatePreviewsRequestType Framework = new(Values.Framework);
 
     public GenerateTemplatePreviewsRequestType(string value)
     {
@@ -81,6 +81,6 @@ public readonly record struct GenerateTemplatePreviewsRequestType : IStringEnum
 
         public const string Latex = "latex";
 
-        public const string React = "react";
+        public const string Framework = "framework";
     }
 }
